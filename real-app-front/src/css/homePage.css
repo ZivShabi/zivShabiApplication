@@ -1,0 +1,65 @@
+.container-Home-Page {
+    width: 82vw;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.container-Home-Page h2 {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1rem;
+    color: white;
+    text-shadow: 1px 1px 3px #000000;
+}
+
+.container-Home-Page {
+    max-width: 1200px;
+    padding: 30px;
+}
+
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 48%);
+}
+
+
+@media (max-width:767px) {
+    .container-Home-Page {
+        width: 100vw;
+    }
+
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 20px;
+    }
+
+    .container-My-Cards {
+        width: 100vw;
+        justify-content: center;
+    }
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.page-header h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: rgb(196, 190, 190);
+    text-shadow: 1px 1px 3px #000000;
+}
+
+.page-header h5 {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: white;
+    text-shadow: 1px 1px 3px #000000;
+}

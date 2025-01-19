@@ -1,0 +1,23 @@
+.container-About-Page {
+    width: 93vw;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.container-Services-Tools-Showcase {
+    max-width: 1200px;
+    margin: 0 auto;
+    line-height: 4;
+}
+
+.ToolsShowcase-body:hover {
+    box-shadow: 1px 1px 3px #000000;
+    border-radius: 4px;
+}
+
+
+.ToolsShowcase-body {
+    border-radius: 4px;
+}

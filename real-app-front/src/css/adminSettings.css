@@ -1,0 +1,77 @@
+.table-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+.table-responsive {
+    max-width: 77vw;
+    overflow-x: auto;
+}
+
+.table {
+    margin: 0 auto;
+    width: auto;
+    /* התאמה אוטומטית של רוחב */
+    border-collapse: collapse;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+    /* צבע רקע לשורות זוגיות */
+}
+
+.table tbody tr:hover {
+    background-color: #e2e6ea;
+    /* אפקט hover לשורות */
+}
+
+.table thead th {
+    border: 2px solid #dee2e6;
+    text-align: center;
+    padding: 10px;
+}
+
+.table td,
+.table thead th {
+    font-size: 1em;
+    font-weight: 700;
+    color: white;
+    text-shadow: 1px 1px 3px #000000;
+}
+
+.table-dark th {
+    font-weight: bold;
+    background-color: #343a40;
+    color: rgb(196, 190, 190);
+    text-shadow: 1px 1px 3px #000000;
+}
+
+.table td,
+.table th {
+    text-align: center;
+    padding: 8px;
+    vertical-align: middle;
+    border: 1px solid #dee2e6;
+}
+
+.userImg {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .table-container {
+        flex-direction: column;
+    }
+
+    .table {
+        font-size: 0.85rem;
+    }
+}

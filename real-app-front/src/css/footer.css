@@ -1,0 +1,51 @@
+.container-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.footer {
+    width: 40vw;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1em;
+    text-align: left;
+}
+
+.siteRating H2 {
+    font-size: 1rem;
+    color: white;
+    margin: 0.5em;
+    text-shadow: 1px 1px 3px #000000;
+    text-align: right;
+}
+
+.siteRating {
+    width: 60vw;
+    text-align: center;
+}
+
+.logo {
+    font-size: 1rem;
+    color: white;
+    text-shadow: 1px 1px 3px #000000;
+}
+
+
+@media (max-width:767px) {
+    .rating h2 {
+        width: 50vw;
+        text-align: center;
+        font-size: 0.7rem;
+        color: white;
+        margin: 1.5em;
+        text-shadow: 1px 1px 3px #000000;
+    }
+
+    .logo {
+        margin: 1em;
+        font-size: 0.7rem;
+        color: white;
+        text-shadow: 1px 1px 3px #000000;
+    }
+}

@@ -1,0 +1,28 @@
+require('dotenv').config()
+const express = require('express')
+const mongoDB = require('./config/mongoDB')
+const { errorHandler } = require('./middlewares/errorMiddleware')
+const httpRoutes = require('./routes/httpUser')
+const cardRoutes = require('./routes/httpCard')
+const messageRoutes = require('./routes/httpMessage')
+const postRoutes = require('./routes/httpPost')
+const PostResponseRoutes = require('./routes/httpPostResponse')
+const configureExpress = require('./config/express')
+const ratingsRouter = require('./routes/httpRatings')
+
+const app = express()
+mongoDB()
+configureExpress(app)
+app.use('/posts', postRoutes)
+app.use('/PostResponseRoutes', PostResponseRoutes)
+app.use('/messages', messageRoutes)
+app.use('/users', httpRoutes)
+app.use('/cards', cardRoutes)
+app.use('/ratings', ratingsRouter)
+app.get('/', (req, res) => { res.render('home') })
+app.get('/about', (req, res) => { res.render('about') })
+app.use(errorHandler)
+const PORT = process.env.PORT
+app.listen(PORT, () => console.log(`
+Server running ${PORT}
+http://localhost:5005 `))

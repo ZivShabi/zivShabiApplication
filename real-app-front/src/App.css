@@ -1,0 +1,16 @@
+body {
+  background: linear-gradient(100deg, #0c5b88 10%, #243e6e 100%, #347aa9 100%);
+}
+
+
+
+.brightness-Toggle-Icon {
+  width: 15vw;
+  color: rgb(0, 88, 212);
+  max-height: 15vw;
+  padding: 1em;
+}
+
+.logo {
+  line-height: 2;
+}

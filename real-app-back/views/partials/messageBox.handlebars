@@ -1,0 +1,6 @@
+{{!-- views/partials/messageBox.handlebars --}}
+<div id="messageBox" class="alert {{#if message.type}}alert-{{message.type}}{{else}}hidden{{/if}}">
+    {{#if message.text}}
+    <p>{{message.text}}</p>
+    {{/if}}
+</div>

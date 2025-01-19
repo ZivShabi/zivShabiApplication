@@ -1,0 +1,136 @@
+.business-card {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 33vw;
+    max-width: 500px;
+    margin: 20px 2em;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+@media (max-width:767px) {
+    .business-card {
+        width: 85vw;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 50px;
+        margin: 1em 0;
+
+    }
+}
+
+.business-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.business-card-image-wrapper {
+    width: 100%;
+    overflow: hidden;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.business-card-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.business-card-content {
+    padding: 20px;
+}
+
+
+.business-card-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+}
+
+.business-card-phone,
+.business-card-address {
+    text-decoration: none;
+    font-size: 1rem;
+    color: #007bff;
+    text-shadow: 1px 1px 3px #000000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: color 0.3s ease-in-out;
+}
+
+.business-card-phone:hover,
+.business-card-address:hover {
+    color: #0056b3;
+}
+
+.emailWeb {
+    padding: 1em;
+    text-shadow: 1px 1px 3px #000000;
+}
+
+.business-card-title {
+    font-weight: bold;
+    font-size: 2.2em;
+    color: rgb(196, 190, 190);
+    text-shadow: 1px 1px 3px #000000;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.business-card-opening-text {
+    font-weight: bold;
+    font-size: 2em;
+    margin-bottom: 18px;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.business-card-description {
+    font-weight: bold;
+    font-size: 1.3em;
+    color: white;
+    text-shadow: 1px 1px 3px #000000;
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+
+
+.card-img-top-container {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+}
+
+.card-img-top {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.no-image-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #6c757d;
+    font-size: 1rem;
+    font-style: italic;
+}
+
+@media (max-width: 767px) {
+    .business-card {
+        grid-template-columns: repeat(1, 1fr);
+        /* הגדרה נכונה */
+    }
+}

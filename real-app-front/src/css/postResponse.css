@@ -1,0 +1,137 @@
+.post-responses {
+    width: 36vw;
+    border-radius: 8px;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-responses {
+    max-width: 1200px;
+    padding: 20px;
+}
+
+@media (max-width:767px) {
+    .post-responses {
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+        width: 85vw;
+        margin: 0 auto;
+    }
+
+    .posts {
+        width: 95vw;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr)
+    }
+
+
+}
+
+.responseData {
+
+    margin: 3em;
+}
+
+.new-response-form {
+    margin-bottom: 20px;
+}
+
+.new-response-form textarea {
+    resize: none;
+    margin: 40px auto;
+    min-height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.new-response-form textarea:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.new-response-form button {
+    float: right;
+}
+
+.card {
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(100deg, #0c5b88 10%, #243e6e 100%, #347aa9 100%);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+    position: relative;
+    padding: 15px;
+}
+
+
+.card-text {
+    font-size: 16px;
+    line-height: 3.5;
+    color: white;
+    text-shadow: 1px 1px 3px #000000;
+}
+
+.card-meta {
+    position: absolute;
+    top: 35px;
+    right: 180px;
+    font-size: 10px;
+    font-size: 14px;
+    color: rgb(196, 190, 190);
+    text-shadow: 1px 1px 3px #000000;
+    margin-top: 10px;
+
+}
+
+.btn-danger {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+
+.buttonSubmit {
+    position: absolute;
+    right: 60px;
+    font-size: 12px;
+    padding: 5px 26px;
+    border-radius: 6px;
+    font-weight: bold;
+
+}
+
+
+
+.spinner-border {
+    font-weight: bold;
+    display: block;
+    margin: 20px auto;
+}
+
+
+
+.modal-body {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}

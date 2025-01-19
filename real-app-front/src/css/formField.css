@@ -1,0 +1,99 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+
+header {
+    display: flex;
+    justify-content: center;
+    margin: 2em auto;
+    gap: 40px;
+}
+
+.formFields {
+    width: 100vw;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(80px, auto);
+    gap: 20px;
+    padding: 6em;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .formFields {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 5em;
+    }
+}
+
+@media (max-width: 576px) {
+    .formFields {
+        grid-template-columns: 1fr;
+        padding: 3em;
+    }
+}
+
+input {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+    font-weight: bold;
+    border-bottom: 4px solid #258eff;
+}
+
+h1 {
+    font-size: 3rem;
+    color: #333;
+    line-height: 1;
+    margin: 1em auto;
+    text-align: center;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 1.2rem;
+    color: #333;
+    line-height: 1;
+    text-align: center;
+    font-weight: bold;
+}
+
+p {
+    color: red;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -3em;
+    color: white;
+    text-shadow: 1px 1px 3px #000000;
+}
+
+form>.submit {
+    display: inline-block;
+    border-radius: 4px;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: -4em;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+form>.submit:hover {
+    background-color: #002f62;
+}

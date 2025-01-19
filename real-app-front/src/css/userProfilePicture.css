@@ -1,0 +1,58 @@
+.user-profile-picture {
+    margin: 0 auto;
+    text-align: center;
+    width: 100vw;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.user-profile-picture {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.profile-image {
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.dropzone {
+    border: 2px dashed black;
+    padding: 20px;
+    text-align: center;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+
+.save-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
+
+
+.image-url-input {
+    margin: 10px 0;
+    padding: 5px;
+    width: 80%;
+}
+
+.image-uploader {
+    width: 40vw;
+    margin: 0 auto;
+}
