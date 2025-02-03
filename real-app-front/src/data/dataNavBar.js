@@ -9,20 +9,20 @@ export const linkIdentity = [
 
 export const linkCards = [
     { to: "/myCards", label: "My Cards", icon: "bi bi-bookmark-check" },
-    { to: "/favourites", label: "Favourites", icon: "bi bi-bookmark-heart" },
+    { to: "/friends", label: "Friends", icon: "bi bi-people" },
     { to: "/createCard", label: "Create Card", icon: "bi bi-postcard" },
 
 ]
-
 export const linkadmin = [
-    { to: "/admin-settings", label: "admin-settings", icon: "bi bi-gear" },
+    { to: "/adminSettings", label: "Admin Settings", icon: "bi bi-gear" },
     { to: "/myCards", label: "My Cards", icon: "bi bi-bookmark-check" },
-    { to: "/favourites", label: "Favourites", icon: "bi bi-bookmark-heart" },
     { to: "/createCard", label: "Create Card", icon: "bi bi-postcard" },
 ]
 export const linkLogout = [
+    { to: "/friends", label: "Friends", icon: "bi bi-people" },
     { to: "/messages", label: "Messages", icon: "bi bi-chat-right-dots" },
     { to: "/posts", label: "Posts", icon: "bi bi-file-earmark-post" },
-    { to: "/editing-profile", label: "Editing Profile", icon: "bi bi-gear" },
-    { to: "/sign-out", label: "Sign Out", icon: "bi bi-box-arrow-right" }
+    { to: "/editingProfile", label: "Editing Profile", icon: "bi bi-person-gear" },
+    { to: "/sign-out", label: "Sign Out", icon: "bi bi-box-arrow-right" },
+
 ] 

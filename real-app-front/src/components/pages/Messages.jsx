@@ -4,28 +4,25 @@ import '../../css/messages.css'
 import { useMessages } from '../../contexts/MessagesContext'
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import MessageItem from '../common/MessageItem'
+// import MessageItem from '../common/MessageItem'
 
 function MessageComponent() {
-    const {
-        messages, newMessage, setNewMessage, recipientId, setRecipientId, loading,
-        successMessage, handleSendMessage, handleMarkAsRead, handleDeleteMessage, handleUpdateMessageCount, handleGetMessageById, fetchRecipientName, recipientName, setMessages
-    } = useMessages()
-    const location = useLocation();
+    const { newMessage, setNewMessage, recipientId, setRecipientId, loading, successMessage,
+        handleSendMessage, handleUpdateMessageCount, fetchRecipientName, recipientName } = useMessages()
+    const location = useLocation()
 
     useEffect(() => {
         if (recipientId) {
             handleUpdateMessageCount(recipientId)
-
         }
-    }, [recipientId]);
+    }, [recipientId])
 
     useEffect(() => {
         if (location.state?.recipientId) {
-            setRecipientId(location.state.recipientId);
-            fetchRecipientName(location.state.recipientId);
+            setRecipientId(location.state.recipientId)
+            fetchRecipientName(location.state.recipientId)
         }
-    }, [location.state, setRecipientId]);
+    }, [location.state, setRecipientId])
 
 
     function renderMessageTree(messages) {
@@ -45,9 +42,6 @@ function MessageComponent() {
             </ul>
         );
     }
-
-
-
     function buildMessageTree(messages) {
         const messageMap = {};
         const roots = [];
@@ -66,9 +60,6 @@ function MessageComponent() {
 
         return roots;
     }
-
-
-
 
     return (<div className='messages-container'>
         <div className="PageHeader">
@@ -101,7 +92,7 @@ function MessageComponent() {
                 </div>
             </div>
         </div>
-        <div className="messages-list">
+        {/* <div className="messages-list">
             <div className="messages-list">
                 {renderMessageTree(buildMessageTree(messages))}
             </div>
@@ -120,7 +111,7 @@ function MessageComponent() {
                     ))}
                 </ul>)}
             </ul>
-        </div>
+        </div> */}
     </div >)
 }
 

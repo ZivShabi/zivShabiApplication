@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 import {
     getAllCards,
     getMyCards,
@@ -11,9 +11,14 @@ const CardsContext = createContext()
 
 export const useCards = () => useContext(CardsContext)
 
-export const CardsProvider = ({ children }) => {
+export function CardsProvider({ children }) {
     const [cards, setCards] = useState([])
     const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        fetchAllCards()
+        fetchMyCards()
+    }, [])
 
     async function fetchAllCards() {
         try {
@@ -37,18 +42,22 @@ export const CardsProvider = ({ children }) => {
 
     async function handleToggleLike(id, isLiked) {
         try {
-            const updatedCard = isLiked ? await UnlikeCard(id) : await LikeCard(id)
-            setCards((prevCards) => prevCards.map((card) =>
-                card._id === id ? {
-                    ...card,
-                    liked: !isLiked,
-                    likesCount: updatedCard.likes.length,
-                } : card
-            ))
+            const updatedCard = isLiked
+                ? await UnlikeCard(id)
+                : await LikeCard(id);
+
+            setCards((prevCards) =>
+                prevCards.map((card) =>
+                    card._id === id
+                        ? { ...updatedCard, liked: !isLiked }
+                        : card
+                )
+            );
         } catch (error) {
-            console.error(error.response?.data || error.message)
+            console.error("Error toggling like:", error.response?.data || error.message);
         }
     }
+
 
     async function handleDeleteCard(id) {
         try {
@@ -67,8 +76,6 @@ export const CardsProvider = ({ children }) => {
                 loading,
                 setCards,
                 setLoading,
-                fetchAllCards,
-                fetchMyCards,
                 handleToggleLike,
                 handleDeleteCard,
             }}  >
@@ -76,3 +83,4 @@ export const CardsProvider = ({ children }) => {
         </CardsContext.Provider>
     )
 }
+

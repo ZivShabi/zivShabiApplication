@@ -1,14 +1,19 @@
 import { createContext, useContext, useState } from 'react'
 import { fetchResponses, createResponse, deleteResponse, likeResponse, unlikeResponse } from '../services/responseRoutes/postResponseServices'
 import { FORBIDDEN_WORDS } from '../data/dataForbiddenWords'
+import { useAuth } from '../contexts/User.Identification'
 const PostResponseContext = createContext()
 
-export const PostResponseProvider = ({ children }) => {
+export function PostResponseProvider({ children }) {
     const [responsesByPostId, setResponsesByPostId] = useState({})
     const [loading, setLoading] = useState(false)
     const [newResponseByPostId, setNewResponseByPostId] = useState({})
     const [showForbiddenModal, setShowForbiddenModal] = useState(false)
     const [forbiddenWords, setForbiddenWords] = useState([])
+
+    const { user } = useAuth()
+
+
 
     async function fetchResponsesData(postId) {
         setLoading(true)
@@ -16,7 +21,7 @@ export const PostResponseProvider = ({ children }) => {
             const data = await fetchResponses(postId)
             setResponsesByPostId((prev) => ({ ...prev, [postId]: data }))
         } catch (err) {
-            console.error('Error fetching responses', err)
+            console.error(err)
         } finally {
             setLoading(false)
         }
@@ -26,7 +31,6 @@ export const PostResponseProvider = ({ children }) => {
     async function checkForForbiddenWords(postId) {
         const newContent = newResponseByPostId[postId]
         if (!newContent) return false
-
         const forbiddenFound = FORBIDDEN_WORDS.filter((word) =>
             newContent?.toLowerCase().includes(word)
         )
@@ -59,53 +63,74 @@ export const PostResponseProvider = ({ children }) => {
     }
 
 
+
     function closeForbiddenModal() {
         setShowForbiddenModal(false)
         setForbiddenWords([])
     }
 
-
     async function handleDeleteResponse(postId, responseId) {
         try {
-            await deleteResponse(responseId)
-            setResponsesByPostId((prev) => ({
-                ...prev,
-                [postId]: (prev[postId] || []).filter((response) => response._id !== responseId)
-            }))
+            setResponsesByPostId((prev) => {
+                const currentResponses = prev[postId] || []
+                return {
+                    ...prev,
+                    [postId]: currentResponses.filter((response) => response._id !== responseId),
+                };
+            });
+            fetchResponsesData(postId);
+            await deleteResponse(responseId);
         } catch (err) {
-            console.error('Error deleting response', err)
+            console.error('Error deleting response', err);
         }
     }
+
+
 
     const setNewResponse = (postId, value) => {
         setNewResponseByPostId((prev) => ({ ...prev, [postId]: value }))
     }
 
 
-    async function handleToggleLike(postId, responseId, isLiked) {
+
+    async function handleToggleLike(postId, responseId) {
+        const responseList = responsesByPostId[postId];
+        if (!Array.isArray(responseList)) {
+            console.error('Post ID not found or invalid structure')
+            return;
+        }
+
+        const responseIndex = responseList.findIndex((res) => res._id === responseId)
+        if (responseIndex === -1) {
+            return;
+        }
+
+        const isLiked = responseList[responseIndex].likes?.length > 0
+
         try {
             if (isLiked) {
-                await unlikeResponse(responseId)
+                await unlikeResponse(responseId);
             } else {
-                await likeResponse(responseId)
+                await likeResponse(responseId);
             }
 
             setResponsesByPostId((prev) => ({
                 ...prev,
-                [postId]: prev[postId].map((response) =>
-                    response._id === responseId
-                        ? {
-                            ...response,
-                            liked: !isLiked,
-                            likesCount: response.likesCount + (isLiked ? -1 : 1)
-                        }
-                        : response
-                ),
+                [postId]: prev[postId].map((res, index) => {
+                    if (index !== responseIndex) { return res; }
+                    if (isLiked) {
+                        res.likes = res.likes.filter(x => x !== user._id);
+                    } else if (!res.likes.includes(user._id)) {
+                        res.likes.push(user._id);
+                    }
+                    return res;
+                })
             }));
         } catch (error) {
-            console.error('Error toggling like', error);
+            console.error('Error  like', error)
         }
     }
+
 
 
 
@@ -116,8 +141,8 @@ export const PostResponseProvider = ({ children }) => {
                 responsesByPostId,
                 loading,
                 newResponseByPostId,
-                setNewResponse,
                 fetchResponsesData,
+                setNewResponse,
                 handleResponseSubmit,
                 handleDeleteResponse,
                 handleToggleLike,

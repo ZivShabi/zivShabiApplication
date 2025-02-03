@@ -4,11 +4,7 @@ import PageHeader from '../common/PageHeader'
 import '../../css/myCards.css'
 import { useCards } from '../../contexts/CardsContext'
 function MyCards() {
-    const { cards, handleToggleLike, loading, handleDeleteCard, fetchMyCards } = useCards()
-
-    useEffect(() => {
-        fetchMyCards()
-    }, [])
+    const { cards, handleToggleLike, loading, handleDeleteCard } = useCards()
 
     if (loading) { return <div>Loading</div> }
     return (<div className="container-My-Cards"> <PageHeader title={'My Cards'}

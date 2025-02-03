@@ -1,18 +1,8 @@
 import { useAudio } from '../../contexts/AudioContext'
+
 function PostAudioTable() {
-    const {
-        showAudioTable,
-        selectedAudioUrls,
-        setSelectedAudioUrl
-    } = useAudio()
+    const { handleAudioSelection, showAudioTable, selectedAudioUrls, } = useAudio()
 
-    const handleAudioSelection = (audioUrl) => {
-        setSelectedAudioUrl(audioUrl)
-        const audio = new Audio(audioUrl)
-        audio.play()
-    }
-
-    // http://localhost:5005/uploads/7384hgibrtbuo.ogg
     return (
         <>
             {showAudioTable && selectedAudioUrls.length > 1 && (
@@ -25,24 +15,24 @@ function PostAudioTable() {
                         </tr>
                     </thead>
                     <tbody>
-                        {selectedAudioUrls.map((audioUrl, index) => (
+                        {selectedAudioUrls.map((audioFile, index) => (
                             <tr key={index}>
                                 <td>{index + 1}</td>
-                                <td>{audioUrl}</td>
+                                <td>{audioFile.audioFile || 'audio'}</td>
                                 <td>
-                                    <button onClick={() => handleAudioSelection(audioUrl)}
-                                        className="btn btn-link" >
+                                    <button onClick={() => handleAudioSelection(audioFile)}
+                                        className="btn btn-link">
                                         <i className="bi bi-play-circle"></i>
                                     </button>
-
                                 </td>
                             </tr>
                         ))}
+
                     </tbody>
                 </table>
             )}
         </>
-    );
+    )
 }
 
 export default PostAudioTable

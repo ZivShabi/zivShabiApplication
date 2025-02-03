@@ -7,7 +7,7 @@ export async function getAllPosts() {
 }
 
 export async function likePosts(postId) {
-    return await httpService.patch(API_ROUTES.POSTS.Like(postId))
+    return await httpService.patch(API_ROUTES.POSTS.LIKE(postId))
 }
 
 
@@ -33,7 +33,8 @@ export async function deletePosts(id) {
 export async function addImageToPost(postId, imageFile) {
     const formData = new FormData();
     formData.append('image', imageFile);
-    return await httpService.patch(API_ROUTES.POSTS.ADD_IMAGE(postId), formData);
+    const res = await httpService.patch(API_ROUTES.POSTS.ADD_IMAGE(postId), formData);
+    return res.data
 }
 
 

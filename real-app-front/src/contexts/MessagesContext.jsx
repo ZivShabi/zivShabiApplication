@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { getAllMessages, sendMessage, markMessageAsRead, deleteMessage, updateMessageCount, getMessageById } from '../services/messages/messagesService'
-import { data } from 'react-router-dom'
+import { getUserById } from '../services/users/users'
+import { useNavigate } from 'react-router-dom';
 
 const MessagesContext = createContext()
 
@@ -11,6 +12,7 @@ export const MessagesProvider = ({ children }) => {
     const [loading, setLoading] = useState(false)
     const [successMessage, setSuccessMessage] = useState('')
     const [recipientName, setRecipientName] = useState('');
+    const navigate = useNavigate();
 
     async function fetchMessages() {
         setLoading(true);
@@ -33,6 +35,8 @@ export const MessagesProvider = ({ children }) => {
             setNewMessage('')
             setRecipientId('')
             fetchMessages()
+            navigate('/')
+
         } catch (error) {
             console.error(error)
         } finally {
@@ -85,11 +89,18 @@ export const MessagesProvider = ({ children }) => {
 
 
     async function handleGetMessageById(userId, messageId) {
+
         try {
             const message = messages.find((msg) => msg._id === messageId);
             if (message) {
                 setRecipientId(message.sender._id);
                 await fetchRecipientName(message.sender._id)
+                navigate('/messages', {
+                    state: {
+                        recipientId: message.sender._id,
+                        recipientName: message.sender.name // השתמש בשם הנמען שהתקבל
+                    }
+                });
                 return message;
             }
             const data = await getMessageById(userId, messageId)
@@ -100,22 +111,15 @@ export const MessagesProvider = ({ children }) => {
             console.error(err);
         }
     }
-
     async function fetchRecipientName(id) {
         try {
-            const token = localStorage.getItem('token')
-            const headers = { 'Authorization': `Bearer ${token}` }
-            const res = await fetch(`http://localhost:5005/users/${id}`,
-                { headers })
-            const data = await res.json()
-            const fullName = [data.name?.first].filter(Boolean).join(' ')
-            setRecipientName(fullName)
+            const res = await getUserById(id);
+            const fullName = [res.name?.first].filter(Boolean).join(' ');
+            setRecipientName(fullName);
         } catch (error) {
             console.error('Error fetching recipient name:', error);
-
         }
     }
-
 
     useEffect(() => {
         fetchMessages()
@@ -138,7 +142,9 @@ export const MessagesProvider = ({ children }) => {
                 handleGetMessageById,
                 fetchRecipientName,
                 recipientName,
-                setMessages
+                setMessages,
+                setRecipientName,
+
             }}
         >
             {children}

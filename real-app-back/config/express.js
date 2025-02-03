@@ -9,7 +9,8 @@ const { configureHandlebars } = require('./handlebars')
 
 module.exports = (app) => {
     configureHandlebars(app)
-    app.use(express.static(path.join(__dirname, '../uploads')))
+    app.use(express.static('uploads'))
+
     app.use(express.static(path.join(__dirname, '../public')))
     app.use(cors())
     app.use(express.json())

@@ -1,28 +1,74 @@
-import React, { useState } from 'react';
-function VideoModal({ isOpen, onClose, onSubmit, onOptionSelect }) {
+import React, { useRef, useState } from 'react';
+
+const VIDEO_OPTIONS = {
+    URL: 'url',
+    FILE: 'file',
+    RECORD: 'record',
+};
+
+function VideoModal({ isOpen, onClose, onSubmit }) {
+    const [videoOption, setVideoOption] = useState(VIDEO_OPTIONS.URL);
     const [videoFile, setVideoFile] = useState(null);
-    const [videoUrl, setVideoUrl] = useState("");
-    const [videoOption, setVideoOption] = useState("");  // הוספנו את ה-state הזה
+    const [videoUrl, setVideoUrl] = useState('');
+    const videoRef = useRef(null);
+    const [isRecording, setIsRecording] = useState(false);
 
     if (!isOpen) return null;
 
-    const handleFileChange = (event) => {
-        setVideoFile(event.target.files[0]);
-    };
+    const handleFileChange = (e) => setVideoFile(e.target.files[0]);
 
-    const handleUploadSubmit = () => {
-        if (videoFile) {
-            // פנה לפונקציה כדי להעלות את הקובץ
-            const videoData = new FormData();
-            videoData.append('file', videoFile);
-            onSubmit(videoData);  // יש לשלוח את הקובץ או ה-URL לפונקציה המתאימה
+    const handleStartVideoRecording = async () => {
+        if (!navigator.mediaDevices?.getUserMedia) {
+            alert('Your browser does not support video recording.');
+            return;
+        }
+
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            const mediaRecorder = new MediaRecorder(stream);
+            const chunks = [];
+
+            mediaRecorder.ondataavailable = (event) => chunks.push(event.data);
+            mediaRecorder.onstop = async () => {
+                const blob = new Blob(chunks, { type: 'video/webm' });
+                const formData = new FormData();
+                formData.append('video', blob, 'recording.webm');
+                onSubmit(formData);
+
+                stream.getTracks().forEach(track => track.stop());
+            };
+
+            mediaRecorder.start();
+            setIsRecording(true);
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+                videoRef.current.play();
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Unable to start recording.');
         }
     };
 
-    const handleVideoOptionSelect = (option) => {
-        setVideoOption(option);  // שמירה של הבחירה של המשתמש
-        setVideoUrl("");  // מנקים את ה-URL במקרה שבחרו אופציה אחרת
-        onOptionSelect(option);
+    const handleStopRecording = () => {
+        if (videoRef.current?.srcObject) {
+            const stream = videoRef.current.srcObject;
+            stream.getTracks().forEach(track => track.stop());
+            videoRef.current.srcObject = null;
+            setIsRecording(false);
+        }
+    };
+
+    const handleUpload = () => {
+        if (videoOption === VIDEO_OPTIONS.URL && videoUrl) {
+            onSubmit(videoUrl);
+        } else if (videoOption === VIDEO_OPTIONS.FILE && videoFile) {
+            const formData = new FormData();
+            formData.append('file', videoFile);
+            onSubmit(formData);
+        } else if (videoOption === VIDEO_OPTIONS.RECORD && !isRecording) {
+            handleStartVideoRecording();
+        }
     };
 
     return (
@@ -34,55 +80,65 @@ function VideoModal({ isOpen, onClose, onSubmit, onOptionSelect }) {
                         <button type="button" className="btn-close" onClick={onClose}></button>
                     </div>
                     <div className="modal-body">
-                        <p>Choose how you want to add a video</p>
-                        <button
-                            onClick={() => onSubmit('url')}
-                            className="btn btn-outline-primary w-100">
-                            Upload Video URL
-                        </button>
-                        <button
-                            onClick={() => onSubmit('file')}
-                            className="btn btn-outline-secondary w-100">
-                            Upload Video from File
-                        </button>
-                        <button
-                            onClick={() => onSubmit(videoUrl)}
-                            className="btn btn-outline-success w-100">
-                            Record Video Now
-                        </button>
-
-                        {videoOption === 'url' && (
-                            <div>
+                        <p>Select a video input method:</p>
+                        <div className="btn-group w-100">
+                            {Object.entries(VIDEO_OPTIONS).map(([key, value]) => (
+                                <button
+                                    key={key}
+                                    className={`btn btn-outline-primary ${videoOption === value ? 'active' : ''}`}
+                                    onClick={() => setVideoOption(value)}
+                                >
+                                    {value === VIDEO_OPTIONS.URL && 'URL'}
+                                    {value === VIDEO_OPTIONS.FILE && 'File'}
+                                    {value === VIDEO_OPTIONS.RECORD && 'Record'}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="mt-3">
+                            {videoOption === VIDEO_OPTIONS.URL && (
                                 <input
                                     type="text"
+                                    className="form-control"
+                                    placeholder="Enter video URL"
                                     value={videoUrl}
                                     onChange={(e) => setVideoUrl(e.target.value)}
-                                    className="form-control"
-                                    placeholder="Paste video URL"
                                 />
-                            </div>
-                        )}
-                        {videoOption === 'file' && !videoFile && (
-                            <div>
+                            )}
+                            {videoOption === VIDEO_OPTIONS.FILE && (
                                 <input
                                     type="file"
+                                    className="form-control"
                                     accept="video/*"
                                     onChange={handleFileChange}
-                                    className="form-control"
                                 />
-                            </div>
-                        )}
-                        {videoFile && (
-                            <div>
-                                <p>Selected File: {videoFile.name}</p>
-                                <button onClick={handleUploadSubmit} className="btn btn-primary w-100">
-                                    Upload Video
-                                </button>
-                            </div>
-                        )}
+                            )}
+                            {videoOption === VIDEO_OPTIONS.RECORD && (
+                                <div>
+                                    <video
+                                        ref={videoRef}
+                                        style={{ width: '100%', maxHeight: '200px', backgroundColor: 'black' }}
+                                        controls
+                                    />
+                                    {!isRecording ? (
+                                        <button className="btn btn-success mt-3" onClick={handleStartVideoRecording}>
+                                            Start Recording
+                                        </button>
+                                    ) : (
+                                        <button className="btn btn-danger mt-3" onClick={handleStopRecording}>
+                                            Stop Recording
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
+                        <button className="btn btn-primary" onClick={handleUpload} disabled={!videoOption}>
+                            Upload
+                        </button>
+                        <button className="btn btn-secondary" onClick={onClose}>
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>

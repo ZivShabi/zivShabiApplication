@@ -6,7 +6,6 @@ import NavbarLinks from '../common/NavbarLinks'
 import BrightnessMode from '../common/BrightnessMode'
 import { useAuth } from '../../contexts/User.Identification'
 import { useImageContext } from '../../contexts/ImageContext';
-
 function NavBar() {
     const { isNavbarOpen, toggleNavbar } = useNavbar()
     const { user } = useAuth()
@@ -29,7 +28,8 @@ function NavBar() {
             </button>
             <div className={`collapse navbar-collapse 
                     ${isNavbarOpen ? 'show' : ''}`}
-                id="navbarsExample05"> <NavbarLinks />
+                id="navbarsExample05">
+                <NavbarLinks />
             </div>
         </nav>
     )

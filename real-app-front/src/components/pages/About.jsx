@@ -14,9 +14,7 @@ function About() {
                     description={'something about me and this app'} />
             </div>
 
-            < ServicesToolsShowcase
-
-            />
+            < ServicesToolsShowcase />
 
         </div>
     )

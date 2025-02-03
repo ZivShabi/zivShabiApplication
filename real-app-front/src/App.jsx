@@ -14,22 +14,26 @@ import { ImageProvider } from './contexts/ImageContext'
 import Posts from './components/pages/Posts'
 import CreateCard from './components/pages/CreateCardBiz'
 import MyCards from './components/pages/MyCards'
-import Favourites from './components/pages/Favourites'
+import Friends from './components/pages/Friends'
 import { MessagesProvider } from './contexts/MessagesContext'
 import { PostsProvider } from './contexts/PostsContext'
 import { PostResponseProvider } from './contexts/PostResponseContext'
 import { CardsProvider } from './contexts/CardsContext'
 import { RatingsProvider } from "./contexts/RatingsContext"
 import { AudioProvider } from './contexts/AudioContext'
+import { VideoProvider } from './contexts/VideoContext'
 import AdminSettings from './components/pages/AdminSettings'
 import EditingProfile from './components/pages/EditingProfile'
+import DigitalBackground from './components/displays-main-page/DimensionalBackground'
+
 function App() {
   return (<UserIdentification> <ImageProvider> <MessagesProvider>
     <PostsProvider> <PostResponseProvider><CardsProvider> <RatingsProvider>
-      <AudioProvider>
+      <AudioProvider><VideoProvider>
         <div className="app min-vh-100 d-flex flex-column gap-2">
           <Header />
           <main className='flex-fill container'>
+            <DigitalBackground />
             <Routes>
               <Route path='/' element={<Home />} />
               <Route path='/about' element={<About />} />
@@ -40,14 +44,14 @@ function App() {
               <Route path="/posts" element={<Posts />} />
               <Route path="/createCard" element={<CreateCard />} />
               <Route path="/myCards" element={<MyCards />} />
-              <Route path="/favourites" element={<Favourites />} />
-              <Route path="/admin-settings" element={<AdminSettings />} />
-              <Route path="/editing-profile" element={<EditingProfile />} />
+              <Route path="/friends" element={<Friends />} />
+              <Route path="/adminSettings" element={<AdminSettings />} />
+              <Route path="/editingProfile" element={<EditingProfile />} />
             </Routes>
           </main>
           <Footer />
         </div>
-      </AudioProvider>
+      </VideoProvider> </AudioProvider>
     </RatingsProvider></CardsProvider> </PostResponseProvider> </PostsProvider>
   </MessagesProvider> </ImageProvider> </UserIdentification>)
 }

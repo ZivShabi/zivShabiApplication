@@ -4,9 +4,7 @@ import httpService from "../httpService"
 import API_ROUTES from "../apiRoutes"
 
 export async function fetchResponses(postId) {
-    const { data } = await httpService.get(
-        `${API_ROUTES.POSTS_RESPONSE.GET_ALL}/${postId}`
-    )
+    const { data } = await httpService.get(`${API_ROUTES.POSTS_RESPONSE.GET_ALL}/${postId}`)
     return data
 }
 
@@ -35,8 +33,8 @@ export async function updateResponse(postId, updatedContent) {
 
 export async function likeResponse(responseId) {
     try {
-        const res = await httpService.post(API_ROUTES.POSTS_RESPONSE.LIKE(responseId), {});
-        return res.data;
+        const { data } = await httpService.post(API_ROUTES.POSTS_RESPONSE.LIKE(responseId), {});
+        return data;
     } catch (error) {
         const errorMessage = error.response?.data?.message || error.message;
         console.error("Error liking response:", errorMessage);
@@ -49,7 +47,9 @@ export async function unlikeResponse(responseId) {
         const { data } = await httpService.delete(API_ROUTES.POSTS_RESPONSE.UNLIKE(responseId));
         return data;
     } catch (error) {
-        console.error("Error unliking response", error.response?.data || error.message);
+        const errorMessage = error.response?.data?.message || error.message;
+        console.error("Error unliking response:", errorMessage);
         throw error;
     }
 }
+

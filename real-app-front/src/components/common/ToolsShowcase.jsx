@@ -27,7 +27,7 @@ function ServicesToolsShowcase() {
             <div className="row g-4">
                 {rotatedTools.map((service, index) => (
                     <div className="col-md-5 m-1" key={index}>
-                        <div className="ToolsShowcase h-100 text-center card">
+                        <div className="ToolsShowcase h-100 text-center">
                             <div className="ToolsShowcase-body">
                                 <i className={`${service.icon} ToolsShowcase i`}></i>
                                 <h5 className="ToolsShowcase-title">{service.title}</h5>

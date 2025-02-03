@@ -8,7 +8,12 @@ const API_ROUTES = {
         UPDATE_IMAGE: (id) => `/users/updateImage/${id}`,
         UPDATE: (id) => `/users/${id}`,
         GOOGLE_AUTH: "/users/auth/google",
-        DELETE_ACCOUNT: "/users/:id",
+        DELETE_ACCOUNT: (id) => `/users/${id}`,
+        FRIEND_REQUEST: (id) => `/users/${id}/friend-request`,
+        SENT_FRIEND_REQUESTS: (id) => `/users/${id}/sent-friend-requests`,
+        CANCEL_REG_FRIEND: (id) => `/users/${id}/cancel-friend-request`,
+        ACCEPT_REG_FRIEND: (id) => `/users/${id}/accept-friend-request`,
+        GET_FRIEND: (id) => `/users/${id}/friends`,
     },
 
     MESSAGES: {
@@ -22,7 +27,7 @@ const API_ROUTES = {
 
     POSTS: {
         GET_ALL: '/posts',
-        Like: (postId) => `/posts/${postId}/like`,
+        LIKE: (postId) => `/posts/${postId}/like`,
         CREATE: '/posts',
         DELETE: (postId) => `/posts/${postId}`,
         ADD_IMAGE: (postId) => `/posts/${postId}/addImage`,

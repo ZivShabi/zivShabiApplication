@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useRef } from 'react'
 import { addAudioToPost, updateAudioStatus } from '../services/Posts/postsServices'
 const AudioContext = createContext()
 import { usePosts } from '../contexts/PostsContext'
+import config from "../config.json"
+
 export function AudioProvider({ children }) {
 
     const { setPosts } = usePosts()
@@ -9,7 +11,6 @@ export function AudioProvider({ children }) {
     const [mediaRecorder, setMediaRecorder] = useState(null)
     const audioChunks = useRef([])
     const selectedPostId = useRef(null)
-
     const [showAudioTable, setShowAudioTable] = useState(false)
     const [selectedAudioUrls, setSelectedAudioUrls] = useState([])
     const [selectedAudioUrl, setSelectedAudioUrl] = useState(null)
@@ -29,13 +30,13 @@ export function AudioProvider({ children }) {
             }
 
             recorder.onstop = async () => {
-                const blob = new Blob(audioChunks.current, { type: 'audio/ogg' })
+                const blob = new Blob(audioChunks.current, { type: 'audio/mp3' || 'audio/wav' })
                 audioChunks.current = []
                 const formData = new FormData()
 
 
-                formData.append('audio', blob, 'recording.ogg');
-                formData.append('postId', selectedPostId.current);
+                formData.append('audio', blob, 'recording.mp3' || 'recording.wav')
+                formData.append('postId', selectedPostId.current)
 
                 try {
                     const res = await addAudioToPost(selectedPostId.current, formData)
@@ -77,26 +78,37 @@ export function AudioProvider({ children }) {
         }
     }
 
-    async function handleMarkAsListened(postId, audioUrls) {
-        try {
-            const res = await updateAudioStatus(postId);
-            alert(res.message);
 
-            if (res.audioUrls && res.audioUrls.length > 1) {
-                setSelectedAudioUrls(res.audioUrls)
+    async function handleMarkAsListened(postId) {
+        try {
+            const res = await updateAudioStatus(postId)
+            if (res.audioUrls && Array.isArray(res.audioUrls)) {
+                // setSelectedAudioUrls(res.audioUrls.map(url => `${config.URI}${url}`))
+                setSelectedAudioUrls(res.audioUrls.map(url => `${config.URI}${url.replace('/uploads', '')}`))
+
                 setShowAudioTable(true)
-            } else if (audioUrls && audioUrls.startsWith('http')) {
-                const audioUrl = res.audioUrls[0];
-                const audio = new Audio(audioUrl)
-                audio.play()
-            } else {
-                alert("Invalid or missing audio URL")
             }
         } catch (error) {
-            console.error(error);
-            alert('Failed to update audio status')
+            console.error(error)
         }
     }
+
+    function handleAudioSelection(audioFile) {
+        try {
+            console.log('Selected audio file:', audioFile);
+            const audio = new Audio(audioFile)
+            console.log('Audio URL:', audio);
+            audio.addEventListener('canplaythrough', () => {
+                console.log('Audio can play through');
+                audio.play().then(() => {
+                    console.log('Playback started');
+                    console.log('Selected audio file:', audioFile);
+                }).catch((err) => console.error('Playback error:', err));
+            })
+        } catch (err) { console.log(err) }
+    }
+
+
 
     return (
         <AudioContext.Provider value={{
@@ -108,7 +120,8 @@ export function AudioProvider({ children }) {
             selectedAudioUrls,
             setSelectedAudioUrl,
             selectedAudioUrl,
-            setShowAudioTable
+            setShowAudioTable,
+            handleAudioSelection,
         }}>
             {children}
         </AudioContext.Provider>

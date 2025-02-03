@@ -42,6 +42,7 @@
 .rating-section {
     margin: 20px 0;
     text-align: center;
+
 }
 
 .rating-section p {
@@ -52,11 +53,12 @@
 
 .rating-stars i {
     font-size: 2rem;
-    color: #ffcc00;
+    color: #ffd735;
     cursor: pointer;
     margin: 0 5px;
     transition: transform 0.2s ease, color 0.2s ease;
 }
+
 
 .rating-stars i:hover,
 .rating-stars i.bi-star-fill {
@@ -67,11 +69,12 @@
 
 
 .modal-overlay {
+
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 5vw;
+    left: 10vw;
+    width: 60vw;
+    height: 45vw;
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
@@ -80,7 +83,8 @@
 }
 
 .modal-content {
-    background: #fff;
+    background: linear-gradient(100deg, #002337 10%, #2e4368 100%, #ffffff 100%);
+    width: 40vw;
     padding: 20px;
     border-radius: 8px;
     text-align: center;
@@ -92,4 +96,28 @@
     display: flex;
     gap: 10px;
     justify-content: center;
+}
+
+@media (max-width:767px) {
+    .modal-content {
+        width: 80vw;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
 }

@@ -1,5 +1,5 @@
 
-const { logErrorToFile } = require('../utils/logger');
+const logErrorToFile = require('../utils/logger');
 
 const ERROR_MESSAGES = {
     ACCOUNT_BLOCKED: 'Account is blocked',
@@ -33,7 +33,7 @@ function StringErrBlocked() {
 }
 
 function StringErrEmail() {
-    createError(ERROR_MESSAGES.EMAIL_IN_USE, STATUS_CODES.BAD_REQUEST)
+    throw createError(ERROR_MESSAGES.EMAIL_IN_USE, STATUS_CODES.BAD_REQUEST)
 }
 function StringErrEmailOrPassword() {
     return createError(ERROR_MESSAGES.INVALID_CREDENTIALS, STATUS_CODES.BAD_REQUEST)
@@ -42,15 +42,27 @@ function StringErrUser() {
     throw createError(ERROR_MESSAGES.USER, STATUS_CODES.NOT_FOUND)
 }
 
+// function errorHandler(err, req, res, next) {
+//     const statusCode = err.status || STATUS_CODES.SERVER_ERROR
+//     const message = err.message || ERROR_MESSAGES.SERVER_ERR
+//     logErrorToFile(statusCode, message)
+
+//     console.error(`[ERROR] ${message}`)
+//     res.status(statusCode).json({ message })
+// }
 function errorHandler(err, req, res, next) {
-    const statusCode = err.status || STATUS_CODES.SERVER_ERROR
-    const message = err.message || ERROR_MESSAGES.SERVER_ERR
-    logErrorToFile(statusCode, message)
+    const statusCode = err.status || STATUS_CODES.SERVER_ERROR;
+    const message = err.message || ERROR_MESSAGES.SERVER_ERR;
 
-    console.error(`[ERROR] ${message}`)
-    res.status(statusCode).json({ message })
+    if (typeof logErrorToFile === 'function') {
+        logErrorToFile(statusCode, message);
+    } else {
+        console.error(`[ERROR] logErrorToFile is not defined`);
+    }
+
+    console.error(`[ERROR] ${message}`);
+    res.status(statusCode).json({ message });
 }
-
 
 function createError(message, statusCode) {
     const error = new Error(message)

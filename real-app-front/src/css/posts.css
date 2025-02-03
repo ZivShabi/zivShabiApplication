@@ -14,8 +14,15 @@
 
 }
 
+.container-posts {
+    width: 80vw;
+}
 
 @media (max-width:767px) {
+    .container-posts {
+        width: 95vw;
+    }
+
     .card-body {
         display: flex;
         flex-direction: column;
@@ -61,8 +68,11 @@ textarea.form-control {
 }
 
 .card-text {
-    color: #555;
-    font-size: 0.9rem;
+    font-size: 10px;
+    font-size: 14px;
+    color: rgb(196, 190, 190);
+    text-shadow: 1px 1px 3px #000000;
+    margin-top: 10px;
 
 }
 
@@ -91,17 +101,19 @@ textarea.form-control {
     text-align: center;
 }
 
-.role-admin {
-    color: red;
-    font-weight: bold;
+
+
+video {
+    width: 100%;
+    max-height: 300px;
+    border-radius: 12px;
+    margin-top: 10px;
 }
 
-.role-business {
-    color: blue;
-    font-weight: bold;
-}
-
-.role-user {
-    color: green;
-    font-weight: bold;
+.imageFile {
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 10px;
 }

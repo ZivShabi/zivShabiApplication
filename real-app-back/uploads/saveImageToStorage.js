@@ -1,5 +1,6 @@
+const fs = require('fs')
+const path = require('path')
 
-//real-app-back/uploads/saveImageToStorage.js
 
 async function saveImageToStorage(file) {
     try {
@@ -14,5 +15,7 @@ async function saveImageToStorage(file) {
         throw error;
     }
 }
+
+
 
 module.exports = saveImageToStorage;

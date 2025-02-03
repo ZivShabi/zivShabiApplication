@@ -3,6 +3,11 @@ const addressSchema = require('../userData/addressData')
 const imageSchema = require('../userData/imageData')
 const mongoose = require('mongoose')
 const userData = new mongoose.Schema({
+
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    sentFriendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+
     role: {
         type: String,
         enum: ['user', 'admin'],
@@ -45,6 +50,7 @@ const userData = new mongoose.Schema({
     {
         timestamps: true,
         versionKey: false
-    })
+    }
+)
 
 module.exports = userData

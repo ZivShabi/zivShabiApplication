@@ -40,7 +40,9 @@ async function likePostResponse(req, res) {
     try {
         const postResponseId = req.params.id;
         const userId = req.user._id;
-
+        if (!postResponseId || !userId) {
+            return res.status(400).json({ message: 'Invalid request: missing response ID or user ID' });
+        }
         await PostResponseService.likePostResponse(postResponseId, userId);
         res.status(200).json({ message: 'Post response liked' })
     } catch (error) {
@@ -52,6 +54,12 @@ async function unlikePostResponse(req, res) {
     try {
         const postResponseId = req.params.id;
         const userId = req.user._id;
+
+        if (!postResponseId || !userId) {
+            return res.status(400).json({ message: 'Invalid request: missing response ID or user ID' });
+        }
+
+
         await PostResponseService.unlikePostResponse(postResponseId, userId);
         res.status(200).json({ message: 'Post response unliked' })
     } catch (error) {

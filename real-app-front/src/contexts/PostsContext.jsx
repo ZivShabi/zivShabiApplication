@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { getAllPosts, likePosts, createPosts, deletePosts, addImageToPost } from '../services/Posts/postsServices'
-import { useAuth } from '../contexts/User.Identification'
 
 const PostsContext = createContext()
 
@@ -8,8 +7,8 @@ export const PostsProvider = ({ children }) => {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
     const [newPost, setNewPost] = useState('')
-    const { user } = useAuth()
-    // console.log(JSON.stringify(posts, null, 2));
+
+
     useEffect(() => {
         fetchPosts()
     }, []);
@@ -41,25 +40,11 @@ export const PostsProvider = ({ children }) => {
             const { data } = await createPosts(newPost, null);
             setPosts([data.post, ...posts]);
             setNewPost('');
+
         } catch (err) {
             console.error(err);
         }
     }
-
-    // async function handlePostSubmit(e) {
-    //     e.preventDefault();
-    //     if (!newPost) return;
-
-    //     try {
-    //         const { data } = await createPosts(newPost, imageFile);
-    //         setPosts([data.post, ...posts]);
-    //         setNewPost('');
-    //         setImageFile(null); // איפוס שדה התמונה
-    //     } catch (err) {
-    //         console.error(err);
-    //     }
-    // }
-
 
     async function handleImageSubmit(postId, imageFile) {
         if (!imageFile) return alert('Please select an image first.');
@@ -72,26 +57,6 @@ export const PostsProvider = ({ children }) => {
             console.error(err);
         }
     }
-
-    // async function handleImageSubmit(postId, imageFile) {
-    //     if (!imageFile) return alert('Please select an image first.');
-
-    //     try {
-    //         const { data } = await addImageToPost(postId, imageFile);
-    //         setPosts((prevPosts) =>
-    //             prevPosts.map((post) =>
-    //                 post._id === postId
-    //                     ? { ...post, imagePath: data.imagePath } // עדכון נתיב התמונה
-    //                     : post
-    //             )
-    //         );
-    //         alert('Image added successfully!');
-    //     } catch (err) {
-    //         alert('Failed to add image. Please try again.');
-    //         console.error(err);
-    //     }
-    // }
-
 
     async function handleDeletepost(postId) {
         try {

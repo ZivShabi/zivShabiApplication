@@ -36,15 +36,59 @@ export async function getMe(data) {
     } catch (err) {
         console.error(err);
     }
-
 }
+// הפונקציה לשליחת בקשה לחבר
+export async function friendRequest(id) {
+    try {
+        const cleanedId = id.trim();
+        const res = await httpService.post(API_ROUTES.USERS.FRIEND_REQUEST(cleanedId), {})
+        return res.data;
+    } catch (error) {
+        console.error("Error sending friend request: ", error.message);
+        throw error;
+    }
+}
+
+
+// הפונקציה להחזרת בקשות החברות
+export const getFriendRequests = async (id) => {
+    try {
+        const res = await httpService.get(API_ROUTES.USERS.SENT_FRIEND_REQUESTS(id));
+        return res.data;
+    } catch (error) {
+        console.error("Error fetching friend requests:", error.message);
+        toast.error("Failed to fetch friend requests.");
+        return [];
+    }
+};
+export async function acceptfriendRequest(id) {
+    try {
+        const res = await httpService.patch(API_ROUTES.USERS.ACCEPT_REG_FRIEND(id));
+        return res.data; // חזרת התשובה
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Error accepting friend request');
+    }
+}
+
+
+export async function deletefriendRequest(id) {
+    const res = await httpService.delete(API_ROUTES.USERS.CANCEL_REG_FRIEND(id))
+    return res.data
+}
+
+export async function getfriends(id) {
+    const res = await httpService.get(API_ROUTES.USERS.GET_FRIEND(id))
+    return res.data
+}
+
+
 
 export async function updateUserImage(id, imageUrl) {
     return await httpService.patch(API_ROUTES.USERS.UPDATE_IMAGE(id), { imageUrl })
 }
 
 export async function getUserById(id) {
-    const res = await httpService.get(API_ROUTES.USERS.ME(id))
+    const res = await httpService.get(API_ROUTES.USERS.UPDATE(id))
     return res.data;
 }
 
@@ -69,3 +113,6 @@ export async function changeBizNumber(id, newBizNumber) {
         { bizNumber: newBizNumber })
     return res.data
 }
+
+
+

@@ -50,14 +50,14 @@ function SignOut() {
 
             </div>
 
-            <button className={`btn ${isSigningOut ? "disabled" : ""}`}
+            <button className={`btn ${isSigningOut ? "disabled" : "btn-outline-info"}`}
                 onClick={handleShowModal}
                 disabled={isSigningOut} >
                 {isSigningOut ? (<>
                     <i className="bi bi-arrow-repeat spinner-grow spinner-grow-sm me-2"></i>
                     Signing Out...
                 </>) : (<>
-                    <i className="bi bi-box-arrow-right me-2"></i> Sign Out
+                    <i className="bi bi-box-arrow-right me-2 "></i> Sign Out
                 </>)}
             </button>
 

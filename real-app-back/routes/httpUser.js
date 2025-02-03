@@ -20,6 +20,13 @@ router.patch('/:id/biz-number', authMiddleware, UsersController.changeBizNumber)
 router.delete('/:id', authMiddleware, UsersController.deleteUser)
 router.patch('/updateImage/:id', authMiddleware, UsersController.updateUserImage)
 
+router.post('/:id/friend-request', authMiddleware, UsersController.sendFriendRequest);
+router.patch('/:id/accept-friend-request', authMiddleware, UsersController.acceptFriendRequest);
+router.get('/:id/sent-friend-requests', authMiddleware, UsersController.getSentFriendRequests);
+router.delete('/:id/cancel-friend-request', authMiddleware, UsersController.cancelFriendRequest);
+router.get('/:id/friends', authMiddleware, UsersController.getFriendsList);
+
+
 router.get('/auth/google', passport.authenticate('google'), (req, res, next) => {
     const state = crypto.randomBytes(16).toString('hex')
     const nonce = crypto.randomBytes(16).toString('hex')

@@ -41,8 +41,8 @@ function MessageItem({ message, onMarkAsRead, onDelete, onReply, onMessageById, 
                 <div className="buttons">
                     <button
                         className="btn btn-outline-success message-button"
-                        onClick={() => onMessageById(message.sender._id, message._id)}
-                        disabled={loading}>
+                        onClick={() => onMessageById(message.sender?._id, message._id)}
+                        disabled={loading || !message.sender}>
                         {loading ? <div className="spinner-border text-info" role="status"></div>
                             : <i className="bi bi-chat-dots"></i>}
                     </button>

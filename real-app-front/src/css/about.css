@@ -1,15 +1,16 @@
 .container-About-Page {
-    width: 93vw;
+    width: 80vw;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #2c3e50;
     line-height: 1.6;
     font-size: 16px;
+    margin: 0 auto;
 }
 
 .container-Services-Tools-Showcase {
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 93vw;
     line-height: 4;
+    padding: 2em;
 }
 
 .ToolsShowcase-body:hover {
@@ -20,4 +21,16 @@
 
 .ToolsShowcase-body {
     border-radius: 4px;
+}
+
+@media (max-width:767px) {
+    .container-About-Page {
+        width: 93vw;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #2c3e50;
+        line-height: 1.6;
+        font-size: 16px;
+    }
+
+
 }

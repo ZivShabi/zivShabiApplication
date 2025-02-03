@@ -56,22 +56,14 @@ async function addAudioToPost(postId, userId, audioUrl) {
     if (!post.audioUrls) {
         post.audioUrls = []
     }
-    post.audioUrls.push(audioUrl);
-    // post.audioUrl = audioUrl
+    post.audioUrls.push(audioUrl)
     return await post.save()
 }
 
-// async function AudioStatus(postId, userId) {
+async function AudioStatus(postId, userId) {
 
-// }
+}
 
-
-
-// async function saveVideoToStorage(file) {
-//     // לוגיקה לשמירת וידאו בסטורג' (למשל AWS S3 או שירות אחר)
-//     const videoUrl = `https://storage.example.com/${file.originalname}`;
-//     return videoUrl;
-// };
 
 async function addVideoToPost(postId, userId, videoUrl) {
     const post = await Post.findById(postId)
