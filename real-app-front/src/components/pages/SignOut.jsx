@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "../../contexts/User.Identification"
 import { useRatings } from "../../contexts/RatingsContext"
 import PageHeader from "../common/PageHeader"
-import "../../css/SignOut.css"
+import "../../css/signOut.css"
 
 function SignOut() {
     const [isSigningOut, setIsSigningOut] = useState(false)

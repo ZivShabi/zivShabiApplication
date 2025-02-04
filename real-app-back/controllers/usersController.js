@@ -2,7 +2,7 @@
 //../controllers/usersController.js
 const UserService = require('../services/userService')
 const User = require('../models/user')
-
+const { uploadFile } = require('../middlewares/fileUploadMulter');
 async function registerUser(req, res, next) {
     try {
         const user = await UserService.registerNewUser(req.body, next)
@@ -108,20 +108,47 @@ async function getUsers(req, res) {
     }
 }
 
+// async function updateUserImage(req, res) {
+//     const { id } = req.params
+//     const { imageUrl } = req.body
+//     try {
+//         if (!imageUrl) {
+//             return res.status(400).json({ message: 'image URL is required' })
+//         }
+//         const updatedUser = await UserService.updateImage(id, imageUrl)
+//         res.status(200).json({ message: 'image updated successfully', updatedUser })
+//     } catch (error) {
+//         // res.status(500).json({ message: error.message })
+//         res.status(400).json({ message: error.message });
+//     }
+// }
+
+
+
 async function updateUserImage(req, res) {
-    const { id } = req.params
-    const { imageUrl } = req.body
     try {
-        if (!imageUrl) {
-            return res.status(400).json({ message: 'image URL is required' })
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded' });
         }
-        const updatedUser = await UserService.updateImage(id, imageUrl)
-        res.status(200).json({ message: 'image updated successfully', updatedUser })
+
+        const imageUrl = uploadFile(req.file, 'image');
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { profileImage: imageUrl },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ profileImage: user.profileImage });
     } catch (error) {
-        // res.status(500).json({ message: error.message })
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 }
+
+
 
 async function sendFriendRequest(req, res) {
     try {

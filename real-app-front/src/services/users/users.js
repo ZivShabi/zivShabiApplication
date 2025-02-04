@@ -83,8 +83,13 @@ export async function getfriends(id) {
 
 
 
-export async function updateUserImage(id, imageUrl) {
-    return await httpService.patch(API_ROUTES.USERS.UPDATE_IMAGE(id), { imageUrl })
+export async function updateUserImage(id, file) {
+    const formData = new FormData();
+    formData.append("image", file); // "image" זה השם שהשרת מצפה לו
+
+    return await httpService.patch(API_ROUTES.USERS.UPDATE_IMAGE(id), formData,
+        { headers: { "Content-Type": "multipart/form-data" } })
+
 }
 
 export async function getUserById(id) {

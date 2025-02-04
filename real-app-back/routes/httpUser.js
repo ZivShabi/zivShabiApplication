@@ -7,6 +7,7 @@ const passport = require('passport')
 UsersController = require('../controllers/usersController')
 const authMiddleware = require('../middlewares/authMiddleware')
 const { validateUser, validateRequest } = require('../validations/userValidation')
+const { uploadImage } = require('../middlewares/fileUploadMulter')
 
 router.post('/register', validateRequest(validateUser), UsersController.registerUser)
 router.post('/login', validateRequest(validateUser), UsersController.loginUser)
@@ -18,7 +19,7 @@ router.get('/:id', authMiddleware, UsersController.getUser)
 router.put('/:id', authMiddleware, validateRequest(validateUser), UsersController.updateUser)
 router.patch('/:id/biz-number', authMiddleware, UsersController.changeBizNumber)
 router.delete('/:id', authMiddleware, UsersController.deleteUser)
-router.patch('/updateImage/:id', authMiddleware, UsersController.updateUserImage)
+router.patch('/updateImage/:id', authMiddleware, uploadImage, UsersController.updateUserImage)
 
 router.post('/:id/friend-request', authMiddleware, UsersController.sendFriendRequest);
 router.patch('/:id/accept-friend-request', authMiddleware, UsersController.acceptFriendRequest);
