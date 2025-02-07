@@ -9,12 +9,19 @@ const API_ROUTES = {
         UPDATE: (id) => `/users/${id}`,
         GOOGLE_AUTH: "/users/auth/google",
         DELETE_ACCOUNT: (id) => `/users/${id}`,
-        FRIEND_REQUEST: (id) => `/users/${id}/friend-request`,
-        SENT_FRIEND_REQUESTS: (id) => `/users/${id}/sent-friend-requests`,
-        CANCEL_REG_FRIEND: (id) => `/users/${id}/cancel-friend-request`,
-        ACCEPT_REG_FRIEND: (id) => `/users/${id}/accept-friend-request`,
         GET_FRIEND: (id) => `/users/${id}/friends`,
     },
+
+
+    MEMBERSHIP_REQ: {
+        ME_USERS: (userId) => `/membershipReq/getUsers/${userId}`,
+        FRIEND_REQUEST: (id) => `/membershipReq/${id}/friend-request`,
+        SENT_FRIEND_REQUESTS: (id) => `/membershipReq/${id}/sent-friend-requests`,
+        CANCEL_REG_FRIEND: (id) => `/membershipReq/${id}/cancel-friend-request`,
+        ACCEPT_REG_FRIEND: (id) => `/membershipReq/${id}/accept-friend-request`,
+        GET_FRIEND: (id) => `/users/${id}/friends`,
+    },
+
 
     MESSAGES: {
         GET_ALL: "/messages",

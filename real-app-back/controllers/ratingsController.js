@@ -4,12 +4,11 @@ async function addRating(req, res) {
     try {
         const { rating } = req.body
 
-        // Validate rating
         if (!rating || rating < 1 || rating > 5) {
             return res.status(400).json({ message: 'Rating must be between 1 and 5' })
         }
 
-        await RatingService.addRating(req.user._id, rating) // Associate rating with logged-in user
+        await RatingService.addRating(req.user._id, rating)
         res.status(201).json({ message: 'Rating added successfully' })
     } catch (error) {
         res.status(500).json({ message: error.message })

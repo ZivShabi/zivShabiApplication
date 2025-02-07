@@ -41,14 +41,18 @@ const secureFileFilter = (type) => (req, file, cb) => {
 const uploadImage = multerOptions('images', secureFileFilter('image/'), MAX_FILE_SIZES.image).single('image')
 const uploadAudio = multerOptions('audios', secureFileFilter('audio/'), MAX_FILE_SIZES.audio).single('audio')
 const uploadVideo = multerOptions('videos', secureFileFilter('videos/'), MAX_FILE_SIZES.video).single('video')
-const uploadVoiceMessage = multerOptions('voice-messages', secureFileFilter('voiceMessage/'), MAX_FILE_SIZES.voiceMessage).single('voiceMessage')
+// const uploadVoiceMessage = multerOptions('voice-messages', secureFileFilter('voiceMessage/'), MAX_FILE_SIZES.voiceMessage).single('voiceMessage')
+const uploadVoiceMessage = multerOptions('voice-messages', secureFileFilter('audio/'), MAX_FILE_SIZES.voiceMessage).single('voiceMessage');
+
 
 const uploadFile = (file, type) => {
     if (!file) {
         throw new Error(`${type} file is required`)
     }
     const folder = path.join(__dirname, `../uploads/${type}s/`)
-    console.log('Uploaded File Path:', path.join(__dirname, `../uploads/audios/${file.filename}`));
+    // console.log('Uploaded File Path:', path.join(__dirname, `../uploads/audios/${file.filename}`));
+    console.log('Uploaded File Path:', path.join(__dirname, `../uploads/${type}s/${file.filename}`));
+
     const url = `/uploads/${type}s/${file.filename}`
     console.log('Saved at:', folder, 'File URL', url)
     return url

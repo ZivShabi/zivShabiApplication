@@ -2,7 +2,7 @@
 //../controllers/usersController.js
 const UserService = require('../services/userService')
 const User = require('../models/user')
-const { uploadFile } = require('../middlewares/fileUploadMulter');
+
 async function registerUser(req, res, next) {
     try {
         const user = await UserService.registerNewUser(req.body, next)
@@ -95,12 +95,30 @@ async function changeBizNumber(req, res) {
         res.status(500).json({ message: error.message })
     }
 }
-
-async function getUsers(req, res) {
+async function updateUserImage(req, res) {
     try {
-        // if (req.user.role != "admin") {
-        //     throw new Error("not is admin ")
-        // }
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+        const userId = String(req.user.id);
+        const paramId = String(req.params.id);
+        if (userId !== paramId) {
+            return res.status(403).json({ message: "You are not allowed to change this profile image" });
+        }
+        const updatedUser = await UserService.updateImage(paramId, req.file);
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'Profile image updated successfully', updatedUser });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+async function getUsersToAdmin(req, res) {
+    try {
+        if (req.user.role != "admin") {
+            throw new Error("not is admin ")
+        }
         const users = await User.getAllUsers()
         res.status(200).json(users)
     } catch (error) {
@@ -108,110 +126,10 @@ async function getUsers(req, res) {
     }
 }
 
-// async function updateUserImage(req, res) {
-//     const { id } = req.params
-//     const { imageUrl } = req.body
-//     try {
-//         if (!imageUrl) {
-//             return res.status(400).json({ message: 'image URL is required' })
-//         }
-//         const updatedUser = await UserService.updateImage(id, imageUrl)
-//         res.status(200).json({ message: 'image updated successfully', updatedUser })
-//     } catch (error) {
-//         // res.status(500).json({ message: error.message })
-//         res.status(400).json({ message: error.message });
-//     }
-// }
-
-
-
-async function updateUserImage(req, res) {
-    try {
-        if (!req.file) {
-            return res.status(400).json({ message: 'No file uploaded' });
-        }
-
-        const imageUrl = uploadFile(req.file, 'image');
-        const user = await User.findByIdAndUpdate(
-            req.params.id,
-            { profileImage: imageUrl },
-            { new: true }
-        );
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        res.status(200).json({ profileImage: user.profileImage });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
-
-
-
-async function sendFriendRequest(req, res) {
-    try {
-        const senderId = req.user._id;
-        const receiverId = req.params.id;
-
-        const result = await UserService.sendFriendRequest(senderId, receiverId);
-        res.status(200).json({ message: 'Friend request sent successfully', ...result });
-    } catch (error) {
-        console.error('Error:', error.message);
-        // res.status(500).json({ message: error.message });
-        res.status(400).json({ message: error.message });
-
-    }
-}
-
-async function acceptFriendRequest(req, res) {
-    try {
-        const receiverId = req.user._id; // המשתמש שמאשר את הבקשה
-        const senderId = req.params.id; // המשתמש ששלח את הבקשה
-
-        const result = await UserService.acceptFriendRequest(senderId, receiverId);
-        res.status(200).json({ message: 'Friend request accepted successfully', result });
-    } catch (error) {
-        console.error('Error:', error.message);
-        // res.status(500).json({ message: error.message });
-        res.status(error.status || 500).json({ message: error.message });
-
-    }
-}
-
-
-// ביטול בקשת חברות שנשלחה
-async function cancelFriendRequest(req, res) {
-    try {
-        const senderId = req.user._id;
-        const receiverId = req.params.id;
-        const result = await UserService.cancelFriendRequest(senderId, receiverId);
-        console.log(result)
-
-        res.status(200).json({ message: 'Friend request canceled successfully', result });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
-
-async function getSentFriendRequests(req, res) {
-    try {
-        const user = await User.findById(req.user._id)
-            .populate('sentFriendRequests', 'name email');
-
-        res.status(200).json({
-            sentRequests: user.sentFriendRequests
-        });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
-
 async function getFriendsList(req, res) {
     try {
         const user = await User.findById(req.user._id)
-            .populate('friends', 'name email role isBusiness address'); // שולף רק את השדות name ו-email של החברים
+            .populate('friends', 'name email role isBusiness address')
 
         res.status(200).json({ friends: user.friends });
     } catch (error) {
@@ -221,6 +139,6 @@ async function getFriendsList(req, res) {
 
 
 module.exports = {
-    registerUser, loginUser, getUser, updateUser, deleteUser, changeBizNumber, getUsers, updatePassword, updateUserImage, sendFriendRequest, cancelFriendRequest, getSentFriendRequests, acceptFriendRequest, getFriendsList
+    registerUser, loginUser, getUser, updateUser, deleteUser, changeBizNumber, getUsersToAdmin, updatePassword, updateUserImage, getFriendsList
 }
 

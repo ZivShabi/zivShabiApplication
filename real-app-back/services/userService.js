@@ -6,7 +6,9 @@ const config = require("config")
 const User = require('../models/user')
 err = require('../middlewares/errorMiddleware')
 UserServiceUtils = require('../services/userServiceUtils')
-
+const { uploadFile } = require('../middlewares/fileUploadMulter');
+const fs = require('fs')
+const path = require('path')
 async function registerNewUser(data) {
     const { name, email, password, isBusiness, address, image } = data
     console.log(address, image)
@@ -90,169 +92,36 @@ async function updatePassword(userId, oldPassword, newPassword) {
 
 
 
-async function updateImage(id, imageUrl) {
-    const user = await User.findById(id)
+async function updateImage(id, file) {
+    if (!file) {
+        throw new Error("File is required");
+    }
+    const imageUrl = uploadFile(file, 'image');
+    const user = await User.findByIdAndUpdate(
+        id,
+        { profileImage: imageUrl },
+        { new: true }
+    )
     if (!user) {
         StringErrUser()
+    }
+    if (user.profileImage && user.profileImage !== 'default-profile.png') {
+        const oldImagePath = path.join(__dirname, `../uploads/${user.profileImage}`);
+
+        if (fs.existsSync(oldImagePath)) {
+            fs.unlink(oldImagePath, (err) => {
+                if (err) console.error('Error deleting old image:', err);
+            });
+        }
     }
     user.profileImage = imageUrl
     return await user.save()
 }
 
-// ../services/userService.js
-
-// async function sendFriendRequest(senderId, receiverId) {
-//     const sender = await User.findById(senderId);
-//     const receiver = await User.findById(receiverId);
-
-//     if (!sender || !receiver) {
-//         throw new Error('Sender or Receiver not found');
-//     }
-//     console.log("Receiver's friend requests: ", receiver.friendRequests);
-
-//     // if (receiver.friendRequests.includes(senderId)) {
-//     //     return res.status(200).json({ message: 'Friend request already sent' });
-//     // }
-
-//     if (receiver.friendRequests.includes(senderId)) {
-//         throw new Error('Friend request already sent');
-//     }
-
-
-
-//     receiver.friendRequests.push(senderId);
-//     sender.sentFriendRequests.push(receiverId);  // עדכון בבקשות שנשלחו
-
-//     await receiver.save();
-//     await sender.save();
-
-//     return { senderId, receiverId };
-// }
-async function sendFriendRequest(senderId, receiverId) {
-    if (senderId === receiverId) {
-        throw new Error("You cannot send a friend request to yourself");
-    }
-
-    const sender = await User.findById(senderId);
-    const receiver = await User.findById(receiverId);
-
-    if (!sender || !receiver) {
-        throw new Error('Sender or Receiver not found');
-    }
-
-    if (receiver.friendRequests.includes(senderId)) {
-        throw new Error('Friend request already sent');
-    }
-
-    if (receiver.friends.includes(senderId)) {
-        throw new Error('You are already friends');
-    }
-
-    receiver.friendRequests.push(senderId);
-    sender.sentFriendRequests.push(receiverId);
-
-    await receiver.save();
-    await sender.save();
-
-    return { senderId, receiverId };
-}
-
-// async function acceptFriendRequest(senderId, receiverId) {
-//     const sender = await User.findById(senderId);
-//     const receiver = await User.findById(receiverId);
-
-//     if (!sender || !receiver) {
-//         throw new Error('Sender or Receiver not found');
-//     }
-
-//     console.log("Sender:", sender);
-//     console.log("Receiver:", receiver);
-//     console.log("Receiver's Friend Requests:", receiver.friendRequests);  // הוספת לוג להדפסת בקשות החברות
-
-
-//     // בדיקה אם יש בקשת חברות
-//     if (!receiver.friendRequests.includes(senderId)) {
-//         throw new Error('Friend request not found');
-//     }
-//     if (!receiver.friendRequests.some(id => id.toString() === senderId.toString())) {
-//         throw new Error('Friend request not found');
-//     }
-
-//     // הוספת החברים לרשימת החברים ההדדית
-//     sender.friends.push(receiverId);
-//     receiver.friends.push(senderId);
-
-//     // הסרת הבקשה מרשימת הבקשות
-//     receiver.friendRequests = receiver.friendRequests.filter(id => id.toString() !== senderId.toString());
-
-//     await sender.save();
-//     await receiver.save();
-
-//     return { sender, receiver };
-// }
-async function acceptFriendRequest(senderId, receiverId) {
-    const sender = await User.findById(senderId);
-    const receiver = await User.findById(receiverId);
-
-    if (!sender || !receiver) {
-        const error = new Error('Sender or Receiver not found');
-        error.status = 404;
-        throw error;
-    }
-
-    // בדיקה שהמשתמש שמנסה לאשר הוא באמת המקבל
-    if (!receiver.friendRequests.includes(senderId)) {
-        const error = new Error('Friend request not found or already processed');
-        error.status = 403;
-        throw error;
-    }
-
-    // הוספת חברים אם הם עדיין לא חברים
-    if (!sender.friends.includes(receiverId)) {
-        sender.friends.push(receiverId);
-    }
-
-    if (!receiver.friends.includes(senderId)) {
-        receiver.friends.push(senderId);
-    }
-
-    // הסרת הבקשה מהמערך של בקשות
-    receiver.friendRequests = receiver.friendRequests.filter(id => id.toString() !== senderId.toString());
-
-    await sender.save();
-    await receiver.save();
-
-    return { sender, receiver };
-}
-
-
-
-// ביטול בקשת חברות שנשלחה
-async function cancelFriendRequest(senderId, receiverId) {
-    const sender = await User.findById(senderId);
-    const receiver = await User.findById(receiverId);
-
-    if (!sender || !receiver) {
-        throw new Error('Sender or Receiver not found');
-    }
-
-    // אם לא נשלחה בקשה
-    if (!sender.sentFriendRequests.includes(receiverId)) {
-        throw new Error('No sent friend request found');
-    }
-
-    // הסרת בקשה שנשלחה
-    sender.sentFriendRequests = sender.sentFriendRequests.filter(id => id.toString() !== receiverId.toString());
-    receiver.friendRequests = receiver.friendRequests.filter(id => id.toString() !== senderId.toString());
-
-    await sender.save();
-    await receiver.save();
-}
-
-
 
 module.exports = {
-    generateAuthToken, registerNewUser, validateUser, updatePassword, updateImage, getUserById, deleteUserID, updateDataUser, sendFriendRequest, cancelFriendRequest, acceptFriendRequest
+    generateAuthToken, registerNewUser, validateUser, updatePassword, updateImage,
+    getUserById, deleteUserID, updateDataUser
 }
 
 

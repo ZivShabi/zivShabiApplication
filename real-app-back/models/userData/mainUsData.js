@@ -5,8 +5,6 @@ const mongoose = require('mongoose')
 const userData = new mongoose.Schema({
 
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    sentFriendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 
     role: {
         type: String,
@@ -45,7 +43,11 @@ const userData = new mongoose.Schema({
     },
     address: addressSchema,
     image: imageSchema,
-    profileImage: { type: String }
+    profileImage: {
+        type: String,
+        default: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+        trim: true
+    }
 },
     {
         timestamps: true,

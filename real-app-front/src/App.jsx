@@ -25,11 +25,11 @@ import { VideoProvider } from './contexts/VideoContext'
 import AdminSettings from './components/pages/AdminSettings'
 import EditingProfile from './components/pages/EditingProfile'
 import DigitalBackground from './components/displays-main-page/DimensionalBackground'
-
+import { FriendRequestProvider } from './contexts/FriendRequestContext'
 function App() {
   return (<UserIdentification> <ImageProvider> <MessagesProvider>
     <PostsProvider> <PostResponseProvider><CardsProvider> <RatingsProvider>
-      <AudioProvider><VideoProvider>
+      <AudioProvider><VideoProvider> <FriendRequestProvider>
         <div className="app min-vh-100 d-flex flex-column gap-2">
           <Header />
           <main className='flex-fill container'>
@@ -51,7 +51,7 @@ function App() {
           </main>
           <Footer />
         </div>
-      </VideoProvider> </AudioProvider>
+      </FriendRequestProvider> </VideoProvider> </AudioProvider>
     </RatingsProvider></CardsProvider> </PostResponseProvider> </PostsProvider>
   </MessagesProvider> </ImageProvider> </UserIdentification>)
 }

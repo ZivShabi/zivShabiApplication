@@ -36,9 +36,12 @@ function Posts() {
         <div className="container-posts">
             <PostAudioTable />
             <PageHeader title="Posts" description="Share your thoughts and updates" />
-            <form className="new-post-form" onSubmit={handlePostSubmit => {
+            <form className="new-post-form" onSubmit={(e) => {
+                e.preventDefault()
+                handlePostSubmit()
                 navigate('/')
             }}>
+
                 <div className="">
                     <textarea
                         className="form-control"

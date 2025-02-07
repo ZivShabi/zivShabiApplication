@@ -37,6 +37,15 @@ export async function getMe(data) {
         console.error(err);
     }
 }
+
+export async function getMeuUsers(data) {
+    try {
+        const res = await httpService.get(API_ROUTES.USERS.ME_USERS, data)
+        return res.data
+    } catch (err) {
+        console.error(err);
+    }
+}
 // הפונקציה לשליחת בקשה לחבר
 export async function friendRequest(id) {
     try {
@@ -87,9 +96,7 @@ export async function updateUserImage(id, file) {
     const formData = new FormData();
     formData.append("image", file); // "image" זה השם שהשרת מצפה לו
 
-    return await httpService.patch(API_ROUTES.USERS.UPDATE_IMAGE(id), formData,
-        { headers: { "Content-Type": "multipart/form-data" } })
-
+    return await httpService.patch(API_ROUTES.USERS.UPDATE_IMAGE(id), formData)
 }
 
 export async function getUserById(id) {
@@ -109,7 +116,8 @@ export async function updateUser(id, userData) {
 
 
 export async function deleteUserAccount(id) {
-    const res = await httpService.delete(`${API_ROUTES.USERS.DELETE_ACCOUNT.replace(":id", id)}`)
+    const deleteAccountUrl = API_ROUTES.USERS.DELETE_ACCOUNT(id); // ללא replace
+    const res = await httpService.delete(deleteAccountUrl);
     return res.data
 }
 

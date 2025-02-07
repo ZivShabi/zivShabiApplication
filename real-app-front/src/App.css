@@ -2,7 +2,19 @@ body {
   background: linear-gradient(100deg, #002337 10%, #2e4368 100%, #ffffff 100%);
 }
 
+.containerDeleteUser {
+  width: 80vw;
+  margin: 0 auto;
+  text-align: center;
+}
 
+.buttonDeleteuser {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 80px;
+}
 
 .brightness-Toggle-Icon {
   width: 15vw;

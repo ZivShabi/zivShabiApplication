@@ -40,7 +40,6 @@ export const PostsProvider = ({ children }) => {
             const { data } = await createPosts(newPost, null);
             setPosts([data.post, ...posts]);
             setNewPost('');
-
         } catch (err) {
             console.error(err);
         }

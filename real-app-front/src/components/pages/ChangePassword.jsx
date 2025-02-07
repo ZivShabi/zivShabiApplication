@@ -4,7 +4,6 @@ import { dataFormFieldsChangePassword, initialFormData, formValidationSchema } f
 import FormField from '../common/FormField'
 import { useNavigate } from "react-router-dom"
 import { changePassword } from '../../services/users/users'
-
 function ChangePassword() {
     const navigate = useNavigate()
 
@@ -20,34 +19,36 @@ function ChangePassword() {
         })
     }
 
-    return (<div>  <PageHeader className="signup-page-header" title="Change Password"
-        description="It is recommended to change password from time to time "
-    />
+    return (<div className='changePassword'>
+        <PageHeader className="signup-page-header" title="Change Password"
+            description="It is recommended to change password from time to time "
+        />
 
-        <form onSubmit={receivingConsoleData}> <div className="formFields">
-            <div className=""><h1 className=" like-button ">
-                <i className='bi bi-file-earmark-lock '></i>
-            </h1>
-                <button className='submit btn btn-outline-primary like-button'
-                    type="submit"> <i className="bi bi-send-plus"></i>
-                </button>
-            </div>
-            {dataFormFieldsChangePassword.map(({ name, type, label, required }) => {
-                const fieldValue = getFieldInfo(formData, name)
-                const fieldErrorMessage = getFieldInfo(formErrors, name) || null
-                const isFieldValid = fieldValidationStatus[name] || false
-                return (<FormField
-                    key={name}
-                    name={name}
-                    type={type}
-                    label={label}
-                    required={required}
-                    value={fieldValue}
-                    onChange={handleFieldChange}
-                    errorMessage={fieldErrorMessage}
-                    isValid={isFieldValid}
-                />)
-            })} </div>
+        <form onSubmit={receivingConsoleData}>
+            <div className="formFields">
+                <div className=""><h1 className=" like-button ">
+                    <i className='bi bi-file-earmark-lock '></i>
+                </h1>
+                    <button className='submit btn btn-outline-primary like-button'
+                        type="submit"> <i className="bi bi-send-plus"></i>
+                    </button>
+                </div>
+                {dataFormFieldsChangePassword.map(({ name, type, label, required }) => {
+                    const fieldValue = getFieldInfo(formData, name)
+                    const fieldErrorMessage = getFieldInfo(formErrors, name) || null
+                    const isFieldValid = fieldValidationStatus[name] || false
+                    return (<FormField
+                        key={name}
+                        name={name}
+                        type={type}
+                        label={label}
+                        required={required}
+                        value={fieldValue}
+                        onChange={handleFieldChange}
+                        errorMessage={fieldErrorMessage}
+                        isValid={isFieldValid}
+                    />)
+                })} </div>
         </form>
     </div>)
 } export default ChangePassword

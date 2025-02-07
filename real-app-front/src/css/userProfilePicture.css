@@ -1,11 +1,35 @@
+.containerProfile {
+    width: 80vw;
+}
+
+.containerProfileImage {
+    width: 20vw;
+}
+
 .user-profile-picture {
     margin: 0 auto;
     text-align: center;
-    width: 100vw;
+    width: 40vw;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #2c3e50;
     line-height: 1.6;
     font-size: 16px;
+}
+
+@media (max-width:767px) {
+    .containerProfile {
+        width: 100vw;
+    }
+
+    .user-profile-picture {
+        margin: 2em auto;
+        text-align: center;
+        width: 100vw;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #2c3e50;
+        line-height: 1.6;
+        font-size: 16px;
+    }
 }
 
 .user-profile-picture {
@@ -29,6 +53,7 @@
     margin: 10px 0;
     cursor: pointer;
 }
+
 
 
 .save-button {
