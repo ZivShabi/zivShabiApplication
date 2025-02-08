@@ -14,7 +14,7 @@ const API_ROUTES = {
 
 
     MEMBERSHIP_REQ: {
-        ME_USERS: (userId) => `/membershipReq/getUsers/${userId}`,
+        ME_USERS: (id) => `/membershipReq/getUsers/${id}`,
         FRIEND_REQUEST: (id) => `/membershipReq/${id}/friend-request`,
         SENT_FRIEND_REQUESTS: (id) => `/membershipReq/${id}/sent-friend-requests`,
         CANCEL_REG_FRIEND: (id) => `/membershipReq/${id}/cancel-friend-request`,

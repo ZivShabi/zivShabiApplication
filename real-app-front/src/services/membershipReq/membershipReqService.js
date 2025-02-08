@@ -2,10 +2,10 @@ import httpService from "../httpService"
 import API_ROUTES from "../apiRoutes"
 
 
-export async function getMeuUsers(userId) {
+export async function getMeuUsers(id) {
     try {
 
-        const res = await httpService.get(API_ROUTES.MEMBERSHIP_REQ.ME_USERS(userId));
+        const res = await httpService.get(API_ROUTES.MEMBERSHIP_REQ.ME_USERS(id));
         return res.data;
     } catch (err) {
         console.error("Error fetching users:", err);

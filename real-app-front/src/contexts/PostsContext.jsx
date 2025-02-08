@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { getAllPosts, likePosts, createPosts, deletePosts, addImageToPost } from '../services/Posts/postsServices'
+import { FORBIDDEN_WORDS } from '../data/dataForbiddenWords'
 
 const PostsContext = createContext()
 
@@ -7,6 +8,8 @@ export const PostsProvider = ({ children }) => {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
     const [newPost, setNewPost] = useState('')
+    const [showForbidden, setShowForbiddenModal] = useState(false);
+    const [forbiddenWord, setForbiddenWords] = useState([]);
 
 
     useEffect(() => {
@@ -34,15 +37,36 @@ export const PostsProvider = ({ children }) => {
         } catch (err) { }
     }
 
+    async function checkForForbiddenWords(content) {
+        const forbiddenFound = FORBIDDEN_WORDS.filter((word) =>
+            content?.toLowerCase().includes(word)
+        );
+        return forbiddenFound;
+    }
+
+
     async function handlePostSubmit() {
         if (!newPost) return;
         try {
+
+            const forbiddenFound = await checkForForbiddenWords(newPost);
+            if (forbiddenFound.length > 0) {
+                setForbiddenWords(forbiddenFound);  // שומר את המילים האסורות
+                setShowForbiddenModal(true); // מציג את המודל עם המילים האסורות
+                return;
+            }
+
             const { data } = await createPosts(newPost, null);
             setPosts([data.post, ...posts]);
             setNewPost('');
         } catch (err) {
             console.error(err);
         }
+    }
+
+    function closeForbidden() {
+        setShowForbiddenModal(false); // סוגר את המודל
+        setForbiddenWords([]); // מאפס את המילים האסורות
     }
 
     async function handleImageSubmit(postId, imageFile) {
@@ -78,7 +102,10 @@ export const PostsProvider = ({ children }) => {
                 handlePostSubmit,
                 handleDeletepost,
                 handleImageSubmit,
-                setPosts
+                setPosts,
+                showForbidden,
+                closeForbidden,
+                forbiddenWord
             }}  >
             {children}
         </PostsContext.Provider>

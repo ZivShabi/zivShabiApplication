@@ -2,7 +2,6 @@
 
 //../services/userService.js
 const jwt = require("jsonwebtoken")
-const config = require("config")
 const User = require('../models/user')
 err = require('../middlewares/errorMiddleware')
 UserServiceUtils = require('../services/userServiceUtils')
@@ -49,6 +48,7 @@ async function validateUser(email, password) {
 }
 
 function generateAuthToken(user) {
+
     const token = jwt.sign({
         _id: user._id,
         name: user.name,
@@ -56,9 +56,8 @@ function generateAuthToken(user) {
         role: user.role,
         image: user.image,
         address: user.address,
-
         iat: Date.now()
-    }, config.get("jwtKey"), { expiresIn: '1h' })
+    }, process.env.JWT_SECRET, { expiresIn: '1h' })
     return token
 }
 

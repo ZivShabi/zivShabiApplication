@@ -23,16 +23,16 @@ export const FriendRequestProvider = ({ children }) => {
         }
     }, [user])
 
-    const fetchData = async (userId) => {
-        if (!userId) return;
+    const fetchData = async (id) => {
+        if (!id) return;
 
         try {
-            // console.log("Fetching users with ID:", userId);
+            // console.log("Fetching users with ID:", id);
 
-            // const usersData = await getMeuUsers(userId);
+            // const usersData = await getMeuUsers(id);
             // console.log("Fetched users:", usersData);
 
-            // const friendRequestsData = await getFriendRequests(userId);
+            // const friendRequestsData = await getFriendRequests(id);
             // console.log("Fetched friend requests:", friendRequestsData);
 
             // setUsers(usersData);

@@ -13,8 +13,6 @@ export function PostResponseProvider({ children }) {
 
     const { user } = useAuth()
 
-
-
     async function fetchResponsesData(postId) {
         setLoading(true)
         try {
@@ -130,10 +128,6 @@ export function PostResponseProvider({ children }) {
             console.error('Error  like', error)
         }
     }
-
-
-
-
 
     return (
         <PostResponseContext.Provider

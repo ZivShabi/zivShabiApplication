@@ -4,15 +4,16 @@ const MembershipReq = require('../models/membershipReq');
 
 async function getUsers(req, res) {
     try {
-        const { userId } = req.params;
-        console.log("Received request for userId:", userId);
+        const { id } = req.params;
+        console.log("Received request for userId:", id);
 
-        if (!userId) {
+        if (!id) {
             return res.status(400).json({ message: "User ID is required" });
         }
 
+
         // בדיקה אם המשתמש קיים
-        const currentUser = await MembershipReq.findById(userId)
+        const currentUser = await MembershipReq.findById(id)
             .populate('friends sentFriendRequests friendRequests', 'firstName lastName role ');
 
         if (!currentUser) {
@@ -22,7 +23,7 @@ async function getUsers(req, res) {
 
         // רשימת מזהים של משתמשים שיש להחריג מהתוצאה
         const excludedUserIds = [
-            userId,
+            id,
             ...currentUser.friends.map(friend => friend._id.toString()),
             ...currentUser.sentFriendRequests.map(request => request._id.toString()),
             ...currentUser.friendRequests.map(request => request._id.toString())
