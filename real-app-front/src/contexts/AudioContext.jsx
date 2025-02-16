@@ -3,7 +3,7 @@ import { addAudioToPost, updateAudioStatus } from '../services/Posts/postsServic
 const AudioContext = createContext()
 import { usePosts } from '../contexts/PostsContext'
 import config from "../config.json"
-
+import { API_BASE_URL } from '../services/httpService'
 export function AudioProvider({ children }) {
 
     const { setPosts } = usePosts()
@@ -84,7 +84,7 @@ export function AudioProvider({ children }) {
             const res = await updateAudioStatus(postId)
             if (res.audioUrls && Array.isArray(res.audioUrls)) {
                 // setSelectedAudioUrls(res.audioUrls.map(url => `${config.URI}${url}`))
-                setSelectedAudioUrls(res.audioUrls.map(url => `${config.URI}${url.replace('/uploads', '')}`))
+                setSelectedAudioUrls(res.audioUrls.map(url => `${API_BASE_URL}${url.replace('/uploads', '')}`))
 
                 setShowAudioTable(true)
             }

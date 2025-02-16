@@ -4,13 +4,13 @@ import axios from "axios"
 import { getToken } from "./users/tokenService"
 
 
-// const API_BASE_URL = process.env.NODE_ENV === 'development'
-//     ? config.URI
-//     : 'https://zivshabiapplicationbackend.onrender.com'
+const API_BASE_URL = process.env.NODE_ENV === 'development'
+    ? config.URI
+    : 'https://zivshabiapplicationbackend.onrender.com'
 
-const API_BASE_URL = import.meta.env.REACT_APP_ENVIRONMENT === 'development'
-    ? import.meta.env.REACT_APP_API_LOCAL_URL
-    : import.meta.env.REACT_APP_API_BACK_URL;
+// export const API_BASE_URL = import.meta.env.REACT_APP_ENVIRONMENT === 'development'
+//     ? import.meta.env.REACT_APP_API_LOCAL_URL
+//     : import.meta.env.REACT_APP_API_BACK_URL;
 
 axios.defaults.baseURL = API_BASE_URL
 
