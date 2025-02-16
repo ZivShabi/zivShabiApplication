@@ -15,8 +15,6 @@ module.exports = (app) => {
         credentials: true
     }
     app.use(cors(corsOptions))
-    // app.use(cors())
-
     app.use(express.json())
     app.use(morgan('dev'))
 
@@ -32,4 +30,8 @@ module.exports = (app) => {
 
     app.use(passport.initialize())
     app.use(passport.session())
+    app.get('/', (req, res) => {
+        res.send('Server is running')
+    })
+
 }
