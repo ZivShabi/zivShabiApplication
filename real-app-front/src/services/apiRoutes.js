@@ -12,14 +12,13 @@ const API_ROUTES = {
         GET_FRIEND: (id) => `/users/${id}/friends`,
     },
 
-
     MEMBERSHIP_REQ: {
         ME_USERS: (id) => `/membershipReq/getUsers/${id}`,
         FRIEND_REQUEST: (id) => `/membershipReq/${id}/friend-request`,
         SENT_FRIEND_REQUESTS: (id) => `/membershipReq/${id}/sent-friend-requests`,
         CANCEL_REG_FRIEND: (id) => `/membershipReq/${id}/cancel-friend-request`,
         ACCEPT_REG_FRIEND: (id) => `/membershipReq/${id}/accept-friend-request`,
-        GET_FRIEND: (id) => `/users/${id}/friends`,
+        GET_FRIEND: (id) => `/membershipReq/${id}/friends`,
     },
 
 

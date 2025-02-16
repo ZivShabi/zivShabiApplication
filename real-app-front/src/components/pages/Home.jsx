@@ -28,6 +28,30 @@ function Home() {
     const { users, requests, handleSendFriendRequest,
         handleAcceptRequest, handleDeleteRequest } = useFriendRequest()
 
+
+    function renderProjectDescription() {
+        return (
+            <div className="project-description">
+                <h2>הרשמה לאתר</h2>
+                <p>
+                    ניתן לבחור אם ברצונך להיות משתמש פרטי או עסקי.<br></br>
+                    יש ללחוץ ואז להסיר את הסימון כדי לבחור משתמש עסקי.
+                </p>
+                <h2> Posts</h2>
+                <p>
+                    ניתן לבחור אם ברצונך לעלות תמונה בזמן יצירת הפוסט.<br></br>
+                    יש ללחוץ על <samp><i className="bi bi-box-arrow-in-up"></i></samp>  כדי לבחור תמונה שברצונך להוסיף.
+                </p>
+                <h2> Messages</h2>
+                <p>
+                    ניתן לבחור אם ברצונך להיות משתמש פרטי או עסקי.<br></br>
+                    יש ללחוץ ואז להסיר את הסימון כדי לבחור משתמש עסקי.
+                </p>
+            </div>
+        );
+    }
+
+
     return (<div className="container-Home-Page">
         <PageHeader title={<>Home <Logo /></>}
             description="The home page of the project where I will present content of project"
@@ -40,6 +64,7 @@ function Home() {
                 </button>
             </li>))}
         </ul>
+        {!view && renderProjectDescription()}
         {view === 'cards' &&
             <CardsView
                 cards={cards}

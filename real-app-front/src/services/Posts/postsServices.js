@@ -10,10 +10,6 @@ export async function likePosts(postId) {
     return await httpService.patch(API_ROUTES.POSTS.LIKE(postId))
 }
 
-
-// export async function createPosts(postData) {
-//     return await httpService.post(API_ROUTES.POSTS.CREATE, postData)
-// }
 export async function createPosts(content, imageFile) {
     const formData = new FormData();
     formData.append('content', content);
@@ -22,6 +18,23 @@ export async function createPosts(content, imageFile) {
     }
     return await httpService.post(API_ROUTES.POSTS.CREATE, formData);
 }
+
+// export async function createPosts() {
+//     try {
+//         // const formData = new FormData();
+//         // formData.append('content', newPost);
+//         // formData.append('image', imageFileWhileCreatingPost);
+
+//         // // הצגת הנתונים בתוך ה-FormData
+//         console.log("🔍 Checking FormData before sending:");
+//         const res = await httpService.post(API_ROUTES.POSTS.CREATE,)
+//         console.log("✅ Post Response:", res.data);
+//         return res.data;
+//     } catch (error) {
+//         console.error("❌ Error while creating post:", error);
+//         throw error;
+//     }
+// }
 
 
 
@@ -33,8 +46,19 @@ export async function deletePosts(id) {
 export async function addImageToPost(postId, imageFile) {
     const formData = new FormData();
     formData.append('image', imageFile);
+
     const res = await httpService.patch(API_ROUTES.POSTS.ADD_IMAGE(postId), formData);
-    return res.data
+
+    console.log('Server Response:', res.data); // 🔍 בדיקה: האם השרת מחזיר imageUrl?
+
+    // return res.data;
+    // אם יש imageUrl בתגובה, נדאג לעדכן את הפוסט
+    if (res.data.imageUrl) {
+        return res.data; // מחזירים את הנתונים עם ה-imageUrl
+    }
+
+    return null;
+
 }
 
 

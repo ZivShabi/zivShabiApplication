@@ -6,3 +6,4 @@ export const tabs = [
     { id: 'messages', label: 'Messages' },
     { id: 'posts', label: 'Posts' }
 ];
+

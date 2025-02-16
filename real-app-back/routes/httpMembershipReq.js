@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
-const MembershipReqController = require('../controllers/MembershipReqController');
+const MembershipReqController = require('../controllers/membershipReqController');
 
 router.get('/getUsers/:id', authMiddleware, MembershipReqController.getUsers);
 router.post('/:id/friend-request', authMiddleware, MembershipReqController.sendFriendRequest);

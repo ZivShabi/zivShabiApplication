@@ -1,6 +1,16 @@
 
 import UserRowMinTable from '../UserRowMinTable'
 function UsersView({ users, handleSendFriendRequest }) {
+    if (!Array.isArray(users)) return null; // טיפול במקרה של null או לא מערך
+
+    const seenIds = new Set();
+    const uniqueUsers = users.filter((user) => {
+        if (seenIds.has(user._id)) return false;
+        seenIds.add(user._id);
+        return true;
+    });
+
+
     return (
         <div className="table-container">
             <div className="table-responsive user-table">
@@ -18,13 +28,15 @@ function UsersView({ users, handleSendFriendRequest }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {Array.isArray(users) && users.map(user => (
+
+                        {uniqueUsers.map((user) => (
                             <UserRowMinTable
                                 key={user._id}
                                 user={user}
                                 onSendRequest={() => handleSendFriendRequest(user._id)}
                             />
                         ))}
+
                     </tbody>
                 </table>
             </div>

@@ -9,7 +9,6 @@ export const linkIdentity = [
 
 export const linkCards = [
     { to: "/myCards", label: "My Cards", icon: "bi bi-bookmark-check" },
-    { to: "/friends", label: "Friends", icon: "bi bi-people" },
     { to: "/createCard", label: "Create Card", icon: "bi bi-postcard" },
 
 ]

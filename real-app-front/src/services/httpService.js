@@ -1,9 +1,16 @@
 
-import axios from "axios"
 import config from "../config.json"
+import axios from "axios"
 import { getToken } from "./users/tokenService"
+const API_BASE_URL = process.env.NODE_ENV === 'development'
+    ? config.URI
+    : 'https://your-backend.onrender.com'
 
-axios.defaults.baseURL = config.URI
+// const API_BASE_URL = process.env.REACT_APP_ENVIRONMENT === 'development'
+//     ? process.env.REACT_APP_API_LOCAL_URL
+//     : process.env.REACT_APP_API_BACK_URL;
+
+axios.defaults.baseURL = API_BASE_URL
 
 axios.interceptors.request.use((config) => {
     const token = getToken()

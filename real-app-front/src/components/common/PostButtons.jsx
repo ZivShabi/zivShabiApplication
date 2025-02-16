@@ -14,10 +14,11 @@ function PostButtons({
     imageFile
 }) {
     const fileInputRef = useRef(null)
+    const navigate = useNavigate()
+
     const handleButtonClick = () => {
         fileInputRef.current.click()
     }
-    const navigate = useNavigate()
     return (
         <div className=" ">
             <div className="card-body ">
@@ -26,6 +27,13 @@ function PostButtons({
                     {post.createdBy?.name?.first} {post.createdBy?.name?.last}
                 </h5>
                 <h5 className="card-text">{new Date(post.createdAt).toLocaleString()}</h5>
+                {post.imageUrl && (
+                    <img
+                        src={post.imageUrl}
+                        alt="Uploaded"
+                        style={{ maxWidth: '100%', height: 'auto', marginBottom: '10px' }}
+                    />
+                )}
 
                 <div className="buttons mb-3">
                     <button className="btn btn-outline-info" onClick={handleButtonClick}>

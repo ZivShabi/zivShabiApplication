@@ -1,6 +1,7 @@
 
 import UserRowMinTable from '../UserRowMinTable'
 function RequestsView({ requests, handleAcceptRequest, handleDeleteRequest }) {
+
     return (
         <div className="table-container">
             <div className="table-responsive user-table">
@@ -18,20 +19,17 @@ function RequestsView({ requests, handleAcceptRequest, handleDeleteRequest }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {requests?.length > 0 ? (
-                            requests.map(request => (
-                                <UserRowMinTable
-                                    key={request._id}
-                                    user={request}
-                                    onAcceptRequest={() => handleAcceptRequest(request._id)}
-                                    onDeclineRequest={() => handleDeleteRequest(request._id)}
-                                />
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="8">No requests found</td>
-                            </tr>
-                        )}
+
+                        {requests.map((request, index) => (
+
+                            <UserRowMinTable
+                                key={request._id || index}
+                                user={request}
+                                onAcceptRequest={() => handleAcceptRequest(request._id)}
+                                onDeclineRequest={() => handleDeleteRequest(request._id)}
+                            />
+                        ))}
+
                     </tbody>
                 </table>
             </div>

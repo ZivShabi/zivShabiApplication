@@ -1,96 +1,106 @@
-import { createContext, useState, useContext, useEffect } from 'react';
+
+import { createContext, useState, useContext, useEffect } from 'react'
 import {
     getMeuUsers,
     getFriendRequests,
     friendRequest,
     acceptFriendRequest,
-    deleteFriendRequest
-} from "../services/membershipReq/membershipReqService";
-import { useAuth } from "../contexts/User.Identification";
+    deleteFriendRequest,
+    getFriends
+} from "../services/membershipReq/membershipReqService"
+import { useAuth } from "../contexts/User.Identification"
 
-const FriendRequestContext = createContext();
+const FriendRequestContext = createContext()
 
-
-export const FriendRequestProvider = ({ children }) => {
-    const [users, setUsers] = useState([]);
-    const [requests, setRequests] = useState([]);
-    const [error, setError] = useState(null);
+export function FriendRequestProvider({ children }) {
+    const [users, setUsers] = useState([])
+    const [requests, setRequests] = useState([])
+    const [friends, setFriends] = useState([])
+    const [error, setError] = useState(null)
     const { user } = useAuth()
 
     useEffect(() => {
-        if (user) {
-            fetchData(user._id);
+        if (user?._id) {
+            console.log("Fetching data for user:", user._id)
+            loadFriendRequests(user._id)
+            loadFriends(user._id)
         }
     }, [user])
 
-    const fetchData = async (id) => {
-        if (!id) return;
-
+    async function loadFriends(id) {
         try {
-            // console.log("Fetching users with ID:", id);
-
-            // const usersData = await getMeuUsers(id);
-            // console.log("Fetched users:", usersData);
-
-            // const friendRequestsData = await getFriendRequests(id);
-            // console.log("Fetched friend requests:", friendRequestsData);
-
-            // setUsers(usersData);
-            // setRequests(friendRequestsData);
-
+            const friendsData = await getFriends(id)
+            setFriends(friendsData)
         } catch (error) {
-            setError(error.message);
-            console.error("Error fetching data:", error.message);
+            setError(error.message)
+            console.error("Error fetching friends:", error.response ? error.response.data : error.message)
         }
-    };
+    }
 
-    const handleSendFriendRequest = async (id) => {
+    async function loadFriendRequests(id) {
         try {
-            await friendRequest(id);
-            setRequests(prevRequests => prevRequests.filter(request => request._id !== id));
-            setUsers(prevUsers => prevUsers.filter(user => user._id !== id));
-
+            const usersData = await getMeuUsers(id) || []
+            const friendRequestsData = await getFriendRequests(id) || []
+            const storedRequests = localStorage.getItem('friendRequests')
+            const parsedStoredRequests = storedRequests ? JSON.parse(storedRequests) : []
+            const mergedRequests = [...friendRequestsData, ...parsedStoredRequests]
+                .filter((request, index, self) => index === self.findIndex(r => r._id === request._id))
+            setUsers(usersData)
+            setRequests(mergedRequests)
+            console.log(usersData)
+            console.log(mergedRequests)
         } catch (error) {
-            setError(error.message);
-            console.error("Friend request error:", error);
+            setError(error.message)
+            console.error("Error fetching data", error.message)
         }
-    };
+    }
 
-    const handleAcceptRequest = async (id) => {
+    async function handleSendFriendRequest(id) {
         try {
-            await acceptFriendRequest(id);
-            setRequests((prev) => prev.filter((request) => request._id !== id));
+            await friendRequest(id)
+            setRequests(prev => [...prev, { _id: id }])
+            setUsers(prev => prev.filter(user => user._id !== id))
         } catch (error) {
-            setError(error.message);
-            console.error("Accept Friend request error:", error);
+            setError(error.message)
+            console.error("Friend request error", error)
         }
-    };
-    const handleDeleteRequest = async (id) => {
-        try {
-            await deleteFriendRequest(id);
-            setRequests((prev) => prev.filter((request) => request._id !== id));
-        } catch (error) {
-            setError(error.message);
-            console.error("Delete Friend request error:", error);
-        }
-    };
+    }
 
+    async function handleAcceptRequest(id) {
+        try {
+            await acceptFriendRequest(id)
+            setRequests(prev => prev.filter(request => request._id !== id))
+            loadFriends(user._id)
+        } catch (error) {
+            setError(error.message)
+            console.error("Accept Friend request error", error)
+        }
+    }
+
+    async function handleDeleteRequest(id) {
+        try {
+            await deleteFriendRequest(id)
+            setRequests(prev => prev.filter(request => request._id !== id))
+        } catch (error) {
+            setError(error.message)
+            console.error("Delete Friend request error", error)
+        }
+    }
 
     return (
-        <FriendRequestContext.Provider
-            value={{
-                users,
-                requests,
-                error,
-                handleSendFriendRequest,
-                handleAcceptRequest,
-                handleDeleteRequest,
-            }}>
+        <FriendRequestContext.Provider value={{
+            users,
+            requests,
+            friends,
+            error,
+            handleSendFriendRequest,
+            handleAcceptRequest,
+            handleDeleteRequest,
+            loadFriends
+        }}>
             {children}
         </FriendRequestContext.Provider>
-    );
-};
+    )
+}
 
-export const useFriendRequest = () => {
-    return useContext(FriendRequestContext);
-};
+export const useFriendRequest = () => useContext(FriendRequestContext)

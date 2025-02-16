@@ -1,51 +1,19 @@
 
 
-import { useEffect, useState } from 'react';
 import PageHeader from '../common/PageHeader';
 import { useAuth } from '../../contexts/User.Identification';
 import { useImageContext } from '../../contexts/ImageContext';
-import { getfriends } from '../../services/users/users';
 import { useNavigate } from 'react-router-dom';
 import '../../css/friends.css';
-
+import { useFriendRequest } from '../../contexts/FriendRequestContext'
 function Friends() {
     const { user } = useAuth();
     const { image } = useImageContext();
     const userImage = image || user?.image?.url;
-
-    const [friends, setFriends] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const { friends } = useFriendRequest(); // קבלת רשימת החברים מהקונטקסט
     const navigate = useNavigate();
 
-    async function fetchUserData() {
-        if (!user?._id) {
-            console.error("No user ID found.");
-            return;
-        }
 
-        setLoading(true);
-        setError('');
-        try {
-            const data = await getfriends();
-
-            setFriends(data.friends || []);
-        } catch (error) {
-            setError("Error fetching friends. Please try again later.");
-            console.error("Error fetching friends:", error.message);
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    useEffect(() => {
-        if (user?._id) {
-            fetchUserData();
-        }
-    }, [user]);
-
-    if (loading) return <div className="loading-message">Loading friends...</div>;
-    if (error) return <div className="error-message">{error}</div>;
     if (!user) {
         return <div className="error-message">Please log in to see your friends.</div>;
     }

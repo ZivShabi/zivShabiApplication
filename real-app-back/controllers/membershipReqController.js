@@ -1,43 +1,34 @@
 //../controllers/membershipReqController.js
 const MembershipReqService = require('../services/membershipReqService')
 const MembershipReq = require('../models/membershipReq');
-
+const User = require('../models/user')
 async function getUsers(req, res) {
     try {
-        const { id } = req.params;
-        console.log("Received request for userId:", id);
+        const { id } = req.params
+        if (!id) { return res.status(400).json({ message: "User ID is required" }) }
+        const currentUserFromUsers = await User.findById(id)
+        const currentUserFromMembership = await MembershipReq.findById(id)
 
-        if (!id) {
-            return res.status(400).json({ message: "User ID is required" });
+        if (!currentUserFromUsers && !currentUserFromMembership) {
+            return res.status(404).json({ message: "User not found in both collections" })
         }
-
-
-        // בדיקה אם המשתמש קיים
-        const currentUser = await MembershipReq.findById(id)
-            .populate('friends sentFriendRequests friendRequests', 'firstName lastName role ');
-
-        if (!currentUser) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        console.log("Current user found:", currentUser);
-
-        // רשימת מזהים של משתמשים שיש להחריג מהתוצאה
-        const excludedUserIds = [
+        const excludedUserIds = currentUserFromMembership ? [
             id,
-            ...currentUser.friends.map(friend => friend._id.toString()),
-            ...currentUser.sentFriendRequests.map(request => request._id.toString()),
-            ...currentUser.friendRequests.map(request => request._id.toString())
-        ];
+            ...currentUserFromMembership.friends.map(friend => friend._id.toString()),
+            ...currentUserFromMembership.sentFriendRequests.map(request => request._id.toString()),
+            ...currentUserFromMembership.friendRequests.map(request => request._id.toString())
+        ] : [id];
 
-        // חיפוש כל המשתמשים פרט לאלו שיש להחריג
-        const users = await MembershipReq.find({ _id: { $nin: excludedUserIds } })
-            .select('firstName lastName role');
-        console.log("Users found:", users);
+        const usersFromMembership = await MembershipReq.find({ _id: { $nin: excludedUserIds } })
+            .populate('friends sentFriendRequests friendRequests', 'address name role image')
+            .select('address name role image')
 
-        res.status(200).json(users);
+        const usersFromUsers = await User.find({ _id: { $nin: excludedUserIds } })
+        const combinedUsers = [...usersFromMembership, ...usersFromUsers]
+        res.status(200).json(combinedUsers)
     } catch (error) {
-        console.error("Error fetching users:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        console.error("Error fetching users:", error)
+        res.status(500).json({ message: "Internal Server Error" })
     }
 }
 
@@ -60,7 +51,9 @@ async function acceptFriendRequest(req, res) {
     try {
         const receiverId = req.user._id;
         const senderId = req.params.id;
-
+        if (!receiverId || !senderId) {
+            throw new Error('Invalid user IDs');
+        }
         const result = await MembershipReqService.acceptFriendRequest(senderId, receiverId);
         res.status(200).json({ message: 'Friend request accepted successfully', result });
     } catch (error) {
@@ -69,7 +62,6 @@ async function acceptFriendRequest(req, res) {
     }
 }
 
-// ביטול בקשת חברות שנשלחה
 async function cancelFriendRequest(req, res) {
     try {
         const senderId = req.user._id;
@@ -82,7 +74,6 @@ async function cancelFriendRequest(req, res) {
     }
 }
 
-// פונקציה להחזרת בקשות החברות שהמשתמש קיבל
 async function getReceivedFriendRequests(req, res) {
     try {
         const userId = req.user._id;

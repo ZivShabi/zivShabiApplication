@@ -4,8 +4,6 @@ const imageSchema = require('../userData/imageData')
 const mongoose = require('mongoose')
 const userData = new mongoose.Schema({
 
-    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-
     role: {
         type: String,
         enum: ['user', 'admin'],

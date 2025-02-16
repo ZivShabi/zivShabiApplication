@@ -6,9 +6,9 @@ import ForbiddenWordsModal from '../../common/ForbiddenWordsModal'
 import { usePostResponse } from '../../../contexts/PostResponseContext'
 import { usePosts } from '../../../contexts/PostsContext'
 
-function PostsView({ posts, imageFile, handleImageSubmit, handleLike, handleDeletepost, handleRecordAudio, isRecording, handleMarkAsListened }) {
+function PostsView({ posts, imageFile, handleImageSubmit, handleLike, handleDeletepost, handleRecordAudio, isRecording, handleMarkAsListened, }) {
     const { showForbiddenModal, forbiddenWords, closeForbiddenModal } = usePostResponse()
-    const { showForbidden, forbiddenWord, closeForbidden } = usePosts()
+    const { showForbidden, forbiddenWord, closeForbidden, imageFileWhileCreatingPost, } = usePosts()
 
     return (
         <div className="container-posts">
@@ -27,19 +27,7 @@ function PostsView({ posts, imageFile, handleImageSubmit, handleLike, handleDele
                 {posts.length === 0 ? '' : (
                     posts.map(post => (
                         <div key={post._id}>
-                            {imageFile && (
-                                <button type="button"
-                                    className="btn btn-outline-primary like-button"
-                                    onClick={() => handleImageSubmit(posts[0]._id, imageFile)}>
-                                    <i className="bi bi-camera"></i>
-                                </button>
-                            )}
-                            {post.imageUrl && (
-                                <img src={post.imageUrl}
-                                    alt="Post"
-                                    className="img-fluid mt-3"
-                                    style={{ maxHeight: '300px', objectFit: 'cover' }} />
-                            )}
+                            {/* {console.log('Post Data:', post)} */}
                             <PostButtons
                                 post={post}
                                 handleLike={handleLike}
@@ -54,6 +42,16 @@ function PostsView({ posts, imageFile, handleImageSubmit, handleLike, handleDele
                         </div>
                     ))
                 )}
+                {imageFileWhileCreatingPost && (
+                    <div className="image-preview">
+                        <img
+                            src={URL.createObjectURL(imageFileWhileCreatingPost)}
+                            alt="Preview"
+                            style={{ maxWidth: '100%', maxHeight: '200px', objectFit: 'cover' }}
+                        />
+                    </div>
+                )}
+
             </div>
         </div>
     );

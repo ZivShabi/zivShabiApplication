@@ -5,13 +5,21 @@ const { uploadFile } = require('../middlewares/fileUploadMulter');
 async function createPost(req, res) {
     const { content } = req.body
     const file = req.file
+    console.log("Content:", content);
+    // console.log("File:", file);
 
     if (!content || typeof content !== 'string') {
         return res.status(400).json({ error: true, message: 'Content must be a valid string' })
     }
+    // if (!file) {
+    //     return res.status(400).json({ error: true, message: 'File is required' });
+    // }
+
     try {
         const imageUrl = file ? uploadFile(file, 'image') : null
         const post = await PostService.createPost(content, req.user._id, imageUrl)
+        console.log(imageUrl);  // בדוק אם מתקבל URL לתמונה
+
         res.status(201).json({ message: 'Post created successfully', post })
     } catch (error) {
         console.error('Error creating post:', error);

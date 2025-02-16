@@ -85,12 +85,6 @@ function UserProfilePicture({ id, imageUrl }) {
                 <h1 className="like-button">
                     <i className="bi bi-person-bounding-box"></i>
                 </h1>
-                {/* <button className='btn btn-outline-primary like-button'
-                    onClick={() => alert('Implement additional save logic if needed')}
-                    disabled={isUploading}>
-                    {isUploading ? 'Uploading...' : ''}
-                    <i className="bi bi-send-plus"></i>
-                </button> */}
                 <ImageUploader
                     onImageUpload={updateProfileImage}
                     setErrorMessage={setErrorMessage}

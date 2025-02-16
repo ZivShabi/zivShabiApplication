@@ -1,15 +1,19 @@
-const UserRowMinTable = ({ user, onSendRequest, onAcceptRequest, onDeclineRequest }) => {
-    const { _id, name, isBusiness, address } = user;
+const UserRowMinTable = ({ user = {}, onSendRequest, onAcceptRequest, onDeclineRequest }) => {
+    const { _id, name = {}, isBusiness, address = {} } = user;
+    console.log("User data:", user);
 
     return (
         <tr>
-            <td>{name.first}</td>
-            <td>{name.middle || '-'}</td>
-            <td>{name.last}</td>
+            <td>{name?.first || 'N/A'}</td>
+            <td>{name?.middle || '-'}</td>
+            <td>{name?.last || 'N/A'}</td>
             <td>{isBusiness ? "Business" : "Private"}</td>
-            <td>{address.state || '-'}</td>
-            <td>{address.city}</td>
-            <td>{address.street}</td>
+            <td>{address?.state || '-'}</td>
+            <td>{address?.city || 'N/A'}</td>
+            <td>{address?.street || 'N/A'}</td>
+
+
+
             <td>
                 {onSendRequest && (
                     <button

@@ -6,6 +6,7 @@ export async function getMeuUsers(id) {
     try {
 
         const res = await httpService.get(API_ROUTES.MEMBERSHIP_REQ.ME_USERS(id));
+
         return res.data;
     } catch (err) {
         console.error("Error fetching users:", err);
@@ -28,20 +29,13 @@ export async function friendRequest(id) {
 
 // הפונקציה להחזרת בקשות החברות
 export async function getFriendRequests(id) {
-    if (!id) {
-        console.error("User ID is missing");
-        return [];
-    }
     try {
         const res = await httpService.get(API_ROUTES.MEMBERSHIP_REQ.SENT_FRIEND_REQUESTS(id));
         return res.data;
     } catch (error) {
         console.error("Error fetching friend requests:", error.message);
-        return [];
     }
 }
-
-
 export async function acceptFriendRequest(id) {
     try {
         const res = await httpService.patch(API_ROUTES.MEMBERSHIP_REQ.ACCEPT_REG_FRIEND(id));

@@ -10,6 +10,9 @@ export const PostsProvider = ({ children }) => {
     const [newPost, setNewPost] = useState('')
     const [showForbidden, setShowForbiddenModal] = useState(false);
     const [forbiddenWord, setForbiddenWords] = useState([]);
+    const [imageFileWhileCreatingPost, setImageFileWhileCreatingPost] = useState(null)
+    const [imagePostExists, setImagePostExists] = useState(null)
+
 
 
     useEffect(() => {
@@ -47,6 +50,8 @@ export const PostsProvider = ({ children }) => {
 
     async function handlePostSubmit() {
         if (!newPost) return;
+        if (!newPost && !imageFileWhileCreatingPost) return
+        if (!newPost && imageFileWhileCreatingPost === null) return
         try {
 
             const forbiddenFound = await checkForForbiddenWords(newPost);
@@ -55,31 +60,65 @@ export const PostsProvider = ({ children }) => {
                 setShowForbiddenModal(true); // מציג את המודל עם המילים האסורות
                 return;
             }
-
-            const { data } = await createPosts(newPost, null);
+            // console.log("Checking newPost and imageFile:", newPost, imageFileWhileCreatingPost);
+            // const formData = new FormData();
+            // formData.append("content", newPost);
+            // if (imageFileWhileCreatingPost) {
+            //     formData.append("image", imageFileWhileCreatingPost);
+            // }
+            // console.log("FormData:", formData);
+            // console.log("Image size:", imageFileWhileCreatingPost.size);
+            const { data } = await createPosts(newPost, imageFileWhileCreatingPost);
             setPosts([data.post, ...posts]);
             setNewPost('');
+            setImageFileWhileCreatingPost(null);
+
+
         } catch (err) {
             console.error(err);
         }
     }
+
 
     function closeForbidden() {
         setShowForbiddenModal(false); // סוגר את המודל
         setForbiddenWords([]); // מאפס את המילים האסורות
     }
 
-    async function handleImageSubmit(postId, imageFile) {
-        if (!imageFile) return alert('Please select an image first.');
 
+    async function handleImageSubmit(postId, imagePostExists) {
         try {
-            await addImageToPost(postId, imageFile);
+            if (!imagePostExists) {
+                console.error('❌ No image file selected');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('image', imagePostExists);
+
+            const { data } = await addImageToPost(postId, formData);
+
+            if (!data.imageUrl) {
+                console.error('❌ No imageUrl returned from server:', data);
+                return;
+            }
+
+            setPosts((prevPosts) =>
+                prevPosts.map((post) =>
+                    post._id === postId ? { ...post, imageUrl: data.imageUrl } : post
+                )
+            );
+            setImagePostExists(null);
+            console.log('✅ Updated Posts State:', data);
             alert('Image added successfully!');
         } catch (err) {
+            console.error('❌ Failed to add image:', err);
             alert('Failed to add image. Please try again.');
-            console.error(err);
         }
     }
+
+
+
 
     async function handleDeletepost(postId) {
         try {
@@ -105,7 +144,10 @@ export const PostsProvider = ({ children }) => {
                 setPosts,
                 showForbidden,
                 closeForbidden,
-                forbiddenWord
+                forbiddenWord,
+                imagePostExists,
+                setImageFileWhileCreatingPost,
+                imageFileWhileCreatingPost
             }}  >
             {children}
         </PostsContext.Provider>

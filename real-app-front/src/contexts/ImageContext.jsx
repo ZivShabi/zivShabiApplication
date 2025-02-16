@@ -10,27 +10,19 @@ export function ImageProvider({ children }) {
         }
     )
     const [errorMessage, setErrorMessage] = useState('')
+
     const updateImage = useCallback((newImage) => {
         if (!newImage) {
-            setErrorMessage('Invalid image. Please try again')
-            return
+            setErrorMessage('Invalid image. Please try again');
+            return;
         }
-        //     setErrorMessage('')
-        //     setImage(newImage)
-        //     localStorage.setItem('profileImage', newImage)
-        // }, [])
-
         setErrorMessage('');
+
         if (newImage instanceof Blob) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64Image = reader.result;
-                setImage(base64Image);
-                localStorage.setItem('profileImage', base64Image);
-            };
-            reader.readAsDataURL(newImage);
+            const imageURL = URL.createObjectURL(newImage);
+            setImage(imageURL);
+            localStorage.setItem('profileImage', imageURL);
         } else {
-            // If it's already a Base64 image
             setImage(newImage);
             localStorage.setItem('profileImage', newImage);
         }
