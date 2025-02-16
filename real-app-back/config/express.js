@@ -9,13 +9,13 @@ const { configureHandlebars } = require('./handlebars')
 
 module.exports = (app) => {
     configureHandlebars(app)
-    // const corsOptions = {
-    //     origin: ["http://localhost:5173", "https://zivshabiapplicationfront.onrender.com"],
-    //     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    //     credentials: true
-    // }
-    // app.use(cors(corsOptions))
-    app.use(cors())
+    const corsOptions = {
+        origin: ["http://localhost:5173", "https://zivshabiapplicationfront.onrender.com"],
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        credentials: true
+    }
+    app.use(cors(corsOptions))
+    // app.use(cors())
 
     app.use(express.json())
     app.use(morgan('dev'))
