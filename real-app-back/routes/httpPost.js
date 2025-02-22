@@ -1,4 +1,3 @@
-//real-app-back/routes/httpPost.js
 
 const express = require('express')
 const router = express.Router()
@@ -11,7 +10,7 @@ const {
     uploadVoiceMessage
 } = require('../middlewares/fileUploadMulter')
 
-router.post('/', authMiddleware, uploadImage, postController.createPost)
+router.post('/', authMiddleware, uploadImage, postController.createPost,)
 router.get('/', authMiddleware, postController.getAllPosts)
 router.patch('/:id/like', authMiddleware, postController.likePost)
 router.delete('/:id', authMiddleware, postController.deletePost)

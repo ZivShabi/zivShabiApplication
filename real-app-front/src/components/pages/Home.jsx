@@ -6,6 +6,7 @@ import { useCards } from '../../contexts/CardsContext'
 import { useAuth } from '../../contexts/User.Identification'
 import { usePosts } from '../../contexts/PostsContext'
 import { useAudio } from '../../contexts/AudioContext'
+import { useAudioMessagesContext } from '../../contexts/MessagesAudioContext'
 import { useMessages } from '../../contexts/MessagesContext'
 import { useNavigate } from 'react-router-dom'
 import CardsView from '../common/homeView/CardsView'
@@ -13,44 +14,23 @@ import UsersView from '../common/homeView/UsersView'
 import RequestsView from '../common/homeView/RequestsView'
 import MessagesView from '../common/homeView/MessagesView'
 import PostsView from '../common/homeView/PostsView'
-import { useFriendRequest } from '../../contexts/FriendRequestContext';
+import { useFriendRequest } from '../../contexts/FriendRequestContext'
 import { tabs } from '../../data/dataHome'
-
+import DescriptionOfReferencesInProject from '../common/homeView/DescriptionOfReferencesInProject'
 function Home() {
     const navigate = useNavigate()
     const [view, setView] = useState('')
     const { user } = useAuth()
     const { cards, handleToggleLike, handleDeleteCard } = useCards()
-    const { posts, loading, handleImageSubmit, handleLike, handleDeletepost, imageFile } = usePosts()
+    const { posts, loading, handleImageSubmit, handleLike, handleDeletepost, updateSelectedImage,
+        showForbidden, forbiddenWord, closeForbidden, imageFileWhileCreatingPost } = usePosts()
     const { isRecording, handleRecordAudio, handleMarkAsListened } = useAudio()
+    const { isRecordingMessages, handleRecordAudioMessages, handleMarkAsListenedMessages } = useAudioMessagesContext()
+
     const { messages, setNewMessage, handleMarkAsRead,
         handleDeleteMessage, handleGetMessageById } = useMessages()
     const { users, requests, handleSendFriendRequest,
         handleAcceptRequest, handleDeleteRequest } = useFriendRequest()
-
-
-    function renderProjectDescription() {
-        return (
-            <div className="project-description">
-                <h2>הרשמה לאתר</h2>
-                <p>
-                    ניתן לבחור אם ברצונך להיות משתמש פרטי או עסקי.<br></br>
-                    יש ללחוץ ואז להסיר את הסימון כדי לבחור משתמש פרטי.
-                </p>
-                <h2> Posts</h2>
-                <p>
-                    ניתן לבחור אם ברצונך לעלות תמונה בזמן יצירת הפוסט.<br></br>
-                    יש ללחוץ על <samp><i className="bi bi-box-arrow-in-up"></i></samp>  כדי לבחור תמונה שברצונך להוסיף.
-                </p>
-                <h2> Messages</h2>
-                <p>
-                    ניתן לבחור אם ברצונך להיות משתמש פרטי או עסקי.<br></br>
-                    יש ללחוץ ואז להסיר את הסימון כדי לבחור משתמש עסקי.
-                </p>
-            </div>
-        );
-    }
-
 
     return (<div className="container-Home-Page">
         <PageHeader title={<>Home <Logo /></>}
@@ -64,7 +44,7 @@ function Home() {
                 </button>
             </li>))}
         </ul>
-        {!view && renderProjectDescription()}
+        {!view && DescriptionOfReferencesInProject()}
         {view === 'cards' &&
             <CardsView
                 cards={cards}
@@ -89,13 +69,17 @@ function Home() {
         {view === 'posts' &&
             <PostsView
                 posts={posts}
-                imageFile={imageFile}
                 handleImageSubmit={handleImageSubmit}
                 handleLike={handleLike}
                 handleDeletepost={handleDeletepost}
                 handleRecordAudio={handleRecordAudio}
                 isRecording={isRecording}
                 handleMarkAsListened={handleMarkAsListened}
+                updateSelectedImage={updateSelectedImage}
+                showForbidden={showForbidden}
+                forbiddenWord={forbiddenWord}
+                closeForbidden={closeForbidden}
+                imageFileWhileCreatingPost={imageFileWhileCreatingPost}
             />
         }
         {view === 'messages' &&
@@ -104,6 +88,9 @@ function Home() {
                 handleMarkAsRead={handleMarkAsRead}
                 handleDeleteMessage={handleDeleteMessage}
                 handleGetMessageById={handleGetMessageById}
+                handleRecordAudioMessages={handleRecordAudioMessages}
+                isRecordingMessages={isRecordingMessages}
+                handleMarkAsListenedMessages={handleMarkAsListenedMessages}
                 loading={loading}
                 setNewMessage={setNewMessage}
                 navigate={navigate}

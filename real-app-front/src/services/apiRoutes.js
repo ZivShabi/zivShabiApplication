@@ -29,6 +29,8 @@ const API_ROUTES = {
         DELETE: (messageId) => `/messages/${messageId}`,
         UPDATE_MESSAGE_COUNT: (userId) => `/messages/${userId}/messageCount`,
         GET_BY_ID: (id, messageId) => `/messages/${id}/message/${messageId}`,
+        ADD_AUDIO: (messageId) => `/messages/${messageId}/addAudio`,
+        UPDATE_AUDIO_STATUS: (messageId) => `/messages/${messageId}/audioStatus`,
     },
 
     POSTS: {

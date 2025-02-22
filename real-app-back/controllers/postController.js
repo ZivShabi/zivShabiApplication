@@ -1,28 +1,19 @@
 
 const PostService = require('../services/postService')
 const Post = require('../models/post')
-const { uploadFile } = require('../middlewares/fileUploadMulter');
+const { uploadFile } = require('../middlewares/fileUploadMulter')
 async function createPost(req, res) {
     const { content } = req.body
     const file = req.file
-    console.log("Content:", content);
-    // console.log("File:", file);
-
-    if (!content || typeof content !== 'string') {
-        return res.status(400).json({ error: true, message: 'Content must be a valid string' })
+    if (!content && !file) {
+        return res.status(400).json({ error: true, message: 'At least content or a file is required' })
     }
-    // if (!file) {
-    //     return res.status(400).json({ error: true, message: 'File is required' });
-    // }
-
     try {
-        const imageUrl = file ? uploadFile(file, 'image') : null
-        const post = await PostService.createPost(content, req.user._id, imageUrl)
-        console.log(imageUrl);  // בדוק אם מתקבל URL לתמונה
-
+        const imageUrl = file ? await uploadFile(file, 'image') : null
+        const post = await PostService.createPost(content || null, req.user._id, imageUrl)
         res.status(201).json({ message: 'Post created successfully', post })
     } catch (error) {
-        console.error('Error creating post:', error);
+        console.error('Error creating post', error)
         res.status(500).json({ message: error.message })
     }
 }
@@ -65,7 +56,8 @@ async function addImageToPost(req, res) {
     try {
         const imageUrl = uploadFile(file, 'image')
         const updatedPost = await PostService.addImageToPost(id, userId, imageUrl)
-        res.status(200).json({ message: 'Image added successfully', post: updatedPost })
+        res.status(200).json({ message: 'Image added successfully', imageUrl: updatedPost.imageUrl })
+
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
@@ -91,7 +83,6 @@ async function addAudioToPost(req, res) {
 async function updateAudioStatus(req, res) {
     const userId = req.user.id
     const postId = req.params.id
-
     if (!userId || !postId) {
         return res.status(400).json({ message: 'User ID and Post ID are required' })
     }

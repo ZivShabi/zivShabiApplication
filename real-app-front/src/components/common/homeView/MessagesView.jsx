@@ -1,9 +1,11 @@
 
 import MessageItem from '../MessageItem'
-function MessagesView({ messages, handleMarkAsRead, handleDeleteMessage, handleGetMessageById, loading, setNewMessage, navigate }) {
+import PostAudioTable from '../PostAudioTable'
+function MessagesView({ messages, handleMarkAsRead, handleDeleteMessage, handleGetMessageById, loading, setNewMessage, navigate, handleRecordAudioMessages, handleMarkAsListenedMessages, isRecordingMessages }) {
     return (
         <div className="messages-list">
             <ul className="user-suggestions">
+                <PostAudioTable />
                 {loading ? '' : (
                     messages.map(message => (
                         <MessageItem
@@ -11,6 +13,9 @@ function MessagesView({ messages, handleMarkAsRead, handleDeleteMessage, handleG
                             message={message}
                             onMarkAsRead={handleMarkAsRead}
                             onDelete={handleDeleteMessage}
+                            onAudioUrls={handleMarkAsListenedMessages}
+                            onRecordAudio={handleRecordAudioMessages}
+                            isRecording={isRecordingMessages}
                             onReply={(msg) => {
                                 setNewMessage(`Replying to: ${msg.content}`);
                                 navigate('/messages', { state: { messageId: msg._id } });

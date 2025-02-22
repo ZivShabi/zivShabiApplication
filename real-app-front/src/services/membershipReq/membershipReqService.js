@@ -63,3 +63,5 @@ export async function getFriends(id) {
         throw error;
     }
 }
+
+

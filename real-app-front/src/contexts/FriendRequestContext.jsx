@@ -21,7 +21,6 @@ export function FriendRequestProvider({ children }) {
 
     useEffect(() => {
         if (user?._id) {
-            console.log("Fetching data for user:", user._id)
             loadFriendRequests(user._id)
             loadFriends(user._id)
         }
@@ -44,22 +43,27 @@ export function FriendRequestProvider({ children }) {
             const storedRequests = localStorage.getItem('friendRequests')
             const parsedStoredRequests = storedRequests ? JSON.parse(storedRequests) : []
             const mergedRequests = [...friendRequestsData, ...parsedStoredRequests]
-                .filter((request, index, self) => index === self.findIndex(r => r._id === request._id))
+                .filter((req, i, self) => i === self.findIndex(r => r._id === req._id))
+            const uniqueRequests = Array.from(new Map(mergedRequests.map(r => [r._id, r])).values())
+
             setUsers(usersData)
-            setRequests(mergedRequests)
-            console.log(usersData)
-            console.log(mergedRequests)
+            setRequests(uniqueRequests)
+            localStorage.setItem('friendRequests', JSON.stringify(uniqueRequests));
         } catch (error) {
             setError(error.message)
             console.error("Error fetching data", error.message)
         }
     }
 
+
+
     async function handleSendFriendRequest(id) {
         try {
             await friendRequest(id)
             setRequests(prev => [...prev, { _id: id }])
             setUsers(prev => prev.filter(user => user._id !== id))
+            const updatedRequests = requests.filter(request => request._id !== id)
+            localStorage.setItem('friendRequests', JSON.stringify(updatedRequests))
         } catch (error) {
             setError(error.message)
             console.error("Friend request error", error)
@@ -71,6 +75,8 @@ export function FriendRequestProvider({ children }) {
             await acceptFriendRequest(id)
             setRequests(prev => prev.filter(request => request._id !== id))
             loadFriends(user._id)
+            const updatedRequests = requests.filter(request => request._id !== id)
+            localStorage.setItem('friendRequests', JSON.stringify(updatedRequests))
         } catch (error) {
             setError(error.message)
             console.error("Accept Friend request error", error)
@@ -79,13 +85,16 @@ export function FriendRequestProvider({ children }) {
 
     async function handleDeleteRequest(id) {
         try {
-            await deleteFriendRequest(id)
-            setRequests(prev => prev.filter(request => request._id !== id))
+            await deleteFriendRequest(id);
+            setRequests(prev => prev.filter(request => request._id !== id));
+            const updatedRequests = requests.filter(request => request._id !== id);
+            localStorage.setItem('friendRequests', JSON.stringify(updatedRequests));
         } catch (error) {
-            setError(error.message)
-            console.error("Delete Friend request error", error)
+            setError(error.message);
+            console.error("Delete Friend request error", error);
         }
     }
+
 
     return (
         <FriendRequestContext.Provider value={{
@@ -96,7 +105,8 @@ export function FriendRequestProvider({ children }) {
             handleSendFriendRequest,
             handleAcceptRequest,
             handleDeleteRequest,
-            loadFriends
+            loadFriends,
+            setRequests
         }}>
             {children}
         </FriendRequestContext.Provider>

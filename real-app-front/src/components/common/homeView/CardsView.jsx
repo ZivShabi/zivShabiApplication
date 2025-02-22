@@ -5,6 +5,7 @@ function CardsView({ cards, user, handleDeleteCard, handleToggleLike }) {
     return (
         <div className="cards-grid">
             {cards.map(card => (
+
                 <CardStructureHome
                     key={card._id}
                     cardData={{
@@ -28,6 +29,7 @@ function CardsView({ cards, user, handleDeleteCard, handleToggleLike }) {
                     onDelete={() => handleDeleteCard(card._id, card.liked)}
                     onLike={() => handleToggleLike(card._id, card.liked)}
                 />
+
             ))}
         </div>
     );

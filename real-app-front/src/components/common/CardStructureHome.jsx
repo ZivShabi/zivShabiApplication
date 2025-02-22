@@ -9,8 +9,7 @@ function CardStructureHome({ cardData, onLike, onDelete }) {
         email, web,
         openingText, phone,
         addressLine1, addressLine2,
-        city, state, zip, creatorId, liked, likesCount
-    } = cardData
+        city, state, zip, creatorId, liked, likesCount } = cardData
 
     const navigate = useNavigate()
     const address = ` ${addressLine1} ${addressLine2} ${city} ${state} ${zip}`
@@ -24,6 +23,7 @@ function CardStructureHome({ cardData, onLike, onDelete }) {
             ) : ('')}
         </div>
         <div className="business-card-content">
+
             <h2 className="business-card-title">{title}</h2>
             <p className="business-card-opening-text">{openingText}</p>
             <div className=""><p className="business-card-description">{description}</p></div>

@@ -3,41 +3,39 @@ import { useRef } from 'react'
 import PageHeader from '../common/PageHeader'
 import { usePosts } from '../../contexts/PostsContext'
 import PostAudioTable from '../common/PostAudioTable'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
 function Posts() {
-    const { loading, newPost, setNewPost,
-        handlePostSubmit, setImageFileWhileCreatingPost } = usePosts()
+    const { newPost, setNewPost, handlePostSubmit,
+        updateSelectedImage, imageFileWhileCreatingPost } = usePosts()
 
-    const navigate = useNavigate();
-
-
+    const navigate = useNavigate()
     const fileInputRef = useRef(null)
-    const handleButtonClick = () => {
-        fileInputRef.current.click()
-    }
 
-    const handleImageChange = (e) => {
-        setImageFileWhileCreatingPost(e.target.files[0])
+    function handleButtonClick() {
+        if (fileInputRef && fileInputRef.current) {
+            fileInputRef.current.click()
+        }
     }
-
-    if (loading) {
-        return <div className="spinner-border text-primary" role="status"></div>
+    async function handleFormSubmit(e) {
+        e.preventDefault()
+        if (!imageFileWhileCreatingPost && !newPost) return
+        handlePostSubmit()
+        navigate('/')
     }
-    const handleFormSubmit = async (e) => {
-        e.preventDefault();
-        await handlePostSubmit();
-        navigate('/');
-    };
-
     return (
         <div className="container-posts">
             <PostAudioTable />
             <PageHeader title="Posts" description="Share your thoughts and updates" />
             <form className="new-post-form" onSubmit={handleFormSubmit}>
-
-
                 <div className="">
+                    {imageFileWhileCreatingPost && (
+                        <div className="image-preview">
+                            <img
+                                src={URL.createObjectURL(imageFileWhileCreatingPost)}
+                                alt="Preview" />
+                        </div>
+                    )}
                     <textarea
                         className="form-control"
                         placeholder="Write something"
@@ -53,9 +51,8 @@ function Posts() {
                         <input
                             type="file"
                             accept="image/*"
-                            className="form-control-file"
                             ref={fileInputRef}
-                            onChange={handleImageChange}
+                            onChange={updateSelectedImage}
                             style={{ display: "none" }}
                         />
                         <button
@@ -63,15 +60,11 @@ function Posts() {
                             className="btn btn-outline-primary like-button">
                             <i className="bi bi-send-plus"></i>
                         </button>
-
                     </div>
-
                 </div>
             </form>
-
         </div>
     )
 }
-
 export default Posts
 

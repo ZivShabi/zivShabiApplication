@@ -37,3 +37,25 @@ export async function getMessageById(id, messageId) {
     }
 }
 
+
+export async function addAudioToMessage(messageId, formData) {
+    try {
+        const res = await httpService.patch(API_ROUTES.MESSAGES.ADD_AUDIO(messageId), formData)
+        return res.data
+    } catch (error) {
+        console.error('Error adding Audio ', error.response?.data || error.message)
+        throw error
+    }
+}
+
+export async function updateAudioStatus(messageId, userId) {
+    try {
+        const res = await httpService.get(API_ROUTES.MESSAGES.UPDATE_AUDIO_STATUS(messageId), {
+            userId: userId
+        })
+        return res.data
+    } catch (error) {
+        console.error('Error updating audio status', error.response?.data || error.message)
+        throw error
+    }
+}

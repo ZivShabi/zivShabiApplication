@@ -1,5 +1,5 @@
 
-function MessageItem({ message, onMarkAsRead, onDelete, onReply, onMessageById, loading }) {
+function MessageItem({ message, onMarkAsRead, onDelete, onReply, onMessageById, loading, onAudioUrls, onRecordAudio, isRecording }) {
     return (
         <li key={message._id}>
             <h5>{message.content}</h5>
@@ -26,6 +26,21 @@ function MessageItem({ message, onMarkAsRead, onDelete, onReply, onMessageById, 
                         </button>
                     </div>
                 )}
+                <div className="messageAudioUrls">
+                    <button
+                        className={`btn ${isRecording ? 'btn-danger' : 'btn-outline-primary'}`}
+                        onClick={() => onRecordAudio(message._id)}  >
+                        <i className={`bi ${isRecording ? 'bi-mic-fill' : 'bi-mic'}`}></i>
+                    </button>
+                </div>
+                <div className="messageAudioUrls">
+                    <button
+                        className="btn btn-outline-secondary"
+                        onClick={() => onAudioUrls(message._id, message.audioUrls)}
+                        disabled={!message.audioUrls} >
+                        <i className="bi bi-headphones"></i>
+                    </button>
+                </div>
                 <div className="DeleteMessage">
                     <button className='btn btn-outline-danger like-button-danger'
                         onClick={() => onDelete(message._id)}>

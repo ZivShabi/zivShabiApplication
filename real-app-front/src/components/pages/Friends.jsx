@@ -10,12 +10,12 @@ function Friends() {
     const { user } = useAuth();
     const { image } = useImageContext();
     const userImage = image || user?.image?.url;
-    const { friends } = useFriendRequest(); // קבלת רשימת החברים מהקונטקסט
+    const { friends } = useFriendRequest()
     const navigate = useNavigate();
 
 
     if (!user) {
-        return <div className="error-message">Please log in to see your friends.</div>;
+        return <div className="error-message">Please log in to see your friends.</div>
     }
 
     return (

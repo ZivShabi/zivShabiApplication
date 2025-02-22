@@ -26,10 +26,11 @@ import AdminSettings from './components/pages/AdminSettings'
 import EditingProfile from './components/pages/EditingProfile'
 import DigitalBackground from './components/displays-main-page/DimensionalBackground'
 import { FriendRequestProvider } from './contexts/FriendRequestContext'
+import { AudioMessagesProvider } from './contexts/MessagesAudioContext'
 function App() {
   return (<UserIdentification> <ImageProvider> <MessagesProvider>
     <PostsProvider> <PostResponseProvider><CardsProvider> <RatingsProvider>
-      <AudioProvider><VideoProvider> <FriendRequestProvider>
+      <AudioProvider><VideoProvider> <FriendRequestProvider> <AudioMessagesProvider>
         <div className="app min-vh-100 d-flex flex-column gap-2">
           <Header />
           <main className='flex-fill container'>
@@ -51,7 +52,7 @@ function App() {
           </main>
           <Footer />
         </div>
-      </FriendRequestProvider> </VideoProvider> </AudioProvider>
+      </AudioMessagesProvider> </FriendRequestProvider> </VideoProvider> </AudioProvider>
     </RatingsProvider></CardsProvider> </PostResponseProvider> </PostsProvider>
   </MessagesProvider> </ImageProvider> </UserIdentification>)
 }

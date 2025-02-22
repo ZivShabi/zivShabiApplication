@@ -62,5 +62,28 @@ async function getMessageById(userId, messageId) {
 }
 
 
+async function addAudioToMessage(messageId, userId, audioUrl) {
+    const message = await Message.findById(messageId)
+    if (!message) {
+        throw new Error('Message not found')
+    }
+    if (!userId) {
+        throw new Error('User ID is undefined')
+    }
+    if (!audioUrl) {
+        throw new Error('Audio URL is undefined')
+    }
+    if (message.sender.toString() !== userId.toString()) {
+        throw new Error('Post not found or unauthorized')
+    }
+    if (!message.audioUrls) {
+        message.audioUrls = []
+    }
+    message.audioUrls.push(audioUrl)
+    const savedMessage = await message.save()
+    console.log('Saved message:', savedMessage)
+    return savedMessage
+}
 
-module.exports = { getUserById, updateDataUser, deleteUserID, sendMessageToUser, updateMessageCount, getMessageById }
+
+module.exports = { getUserById, updateDataUser, deleteUserID, sendMessageToUser, updateMessageCount, getMessageById, addAudioToMessage }

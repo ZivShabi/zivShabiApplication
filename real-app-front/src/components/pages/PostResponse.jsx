@@ -43,42 +43,47 @@ function PostResponse({ postId }) {
             </div>
         </form>
 
-        {responses.length === 0 ? null
-            : responses.map((response) => (
-                <div key={response._id || Math.random()} >
-                    <div className="card-body">
-                        <div className="responseData"> <h2 className="card-text">
-                            {response.content && response.content
-                                ? (typeof response.content === 'object' ? JSON.stringify(response.content)
-                                    : response.content) : 'No content provided by the user'
-                            }  </h2>
-                            <p className="card-meta">
-                                {response.createdBy?.first || ''} -{' '}
-                                {response.createdAt ? new Date(response.createdAt).toLocaleString() : 'Just now'}
-                            </p></div>
-                        <div className="buttons">
-
-                            <button
-                                className={`btn ${response.likes?.length > 0 ? 'btn-success' : 'btn-outline-primary'} like-button`}
-                                onClick={() => handleToggleLike(postId, response._id)}
-
-                            >
-                                <i className="bi bi-hand-thumbs-up"></i> ({response.likes?.length || 0})
-                            </button>
-
-                            <button className="btn btn-outline-danger like-button-danger"
-                                onClick={() => handleDeleteResponse(postId, response._id)}  >
-                                <i className="bi bi-trash3"></i>
-                            </button>
-                            <button className="btn btn-outline-success message-button"
-                                onClick={() => navigate('/messages',
-                                    { state: { recipientId: response.createdBy._id } })} >
-                                <i className="bi bi-chat-dots"></i>
-                            </button>
-                        </div>
+        {responses.length === 0 ? null : responses.map((response) => (
+            <div key={response._id || Math.random()} >
+                <div className="card-body">
+                    <div className="responseData">
+                        <h5 className="card-text">
+                            {response.createdBy?.name?.first}
+                            {response.createdBy?.name?.last}
+                        </h5>
+                        <h2 className="card-text">
+                            {response.content && response.content ?
+                                (typeof response.content === 'object' ?
+                                    JSON.stringify(response.content) :
+                                    response.content) :
+                                'No content provided by user'
+                            }
+                        </h2>
+                        <p className="card-meta">
+                            {response.createdBy?.first || ''} -{' '}
+                            {response.createdAt ? new Date(response.createdAt).toLocaleString() : 'Just now'}
+                        </p>
+                    </div>
+                    <div className="buttons">
+                        <button
+                            className={`btn ${response.likes?.length > 0 ?
+                                'btn-success' : 'btn-outline-primary'} like-button`}
+                            onClick={() => handleToggleLike(postId, response._id)} >
+                            <i className="bi bi-hand-thumbs-up"></i>
+                            ({response.likes?.length || 0})
+                        </button>
+                        <button className="btn btn-outline-danger like-button-danger"
+                            onClick={() => handleDeleteResponse(postId, response._id)}  >
+                            <i className="bi bi-trash3"></i>
+                        </button>
+                        <button className="btn btn-outline-success message-button"
+                            onClick={() => navigate('/messages',
+                                { state: { recipientId: response.createdBy._id } })} >
+                            <i className="bi bi-chat-dots"></i>
+                        </button>
                     </div>
                 </div>
-            ))}
+            </div>))}
     </div >)
 }
 
