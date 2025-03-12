@@ -12,6 +12,8 @@ export const API_BASE_URL = process.env.NODE_ENV === 'development'
 //     ? import.meta.env.REACT_APP_API_LOCAL_URL
 //     : import.meta.env.REACT_APP_API_BACK_URL;
 
+
+
 axios.defaults.baseURL = API_BASE_URL
 
 axios.interceptors.request.use((config) => {

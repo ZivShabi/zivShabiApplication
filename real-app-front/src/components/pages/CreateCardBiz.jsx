@@ -4,10 +4,11 @@ import FormField from '../common/FormField'
 import { useNavigate } from "react-router-dom"
 import { createCard } from '../../services/cards/cardsService'
 import { dataFormFieldsCreateCard, initialFormData, formValidationSchema } from '../../data/dataFormFieldsCreateCard'
+import { useCards } from '../../contexts/CardsContext'
 
 function CreateCard() {
     const navigate = useNavigate()
-
+    const { setCards } = useCards()
     const { formData, formErrors, fieldValidationStatus,
         handleFieldChange, submitForm, getFieldInfo
     } = useDynamicForm(initialFormData, formValidationSchema)
@@ -16,9 +17,10 @@ function CreateCard() {
         event.preventDefault()
         submitForm(async (cardData) => {
             try {
-                await createCard(cardData)
+                const newCard = await createCard(cardData)
+                setCards(prevCards => [...prevCards, newCard])
                 navigate('/')
-            } catch (error) { }
+            } catch (error) { console.error("Error card", error) }
         })
     }
     return (<div> <PageHeader className="signup-page-header" title="Create Card"

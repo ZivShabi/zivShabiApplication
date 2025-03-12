@@ -2,12 +2,14 @@
 import CardStructureHome from '../CardStructureHome'
 
 function CardsView({ cards, user, handleDeleteCard, handleToggleLike }) {
+    const getCards = Array.isArray(cards) ? cards : []
+
     return (
         <div className="cards-grid">
-            {cards.map(card => (
+            {getCards.map((card, index) => (
 
                 <CardStructureHome
-                    key={card._id}
+                    key={card._id || index}
                     cardData={{
                         title: card.title,
                         description: card.description,
@@ -22,8 +24,8 @@ function CardsView({ cards, user, handleDeleteCard, handleToggleLike }) {
                         city: card.address.city,
                         state: card.address.state,
                         zip: card.address.zip,
-                        liked: card.likes.includes(user._id),
-                        likesCount: card.likes.length,
+                        liked: Array.isArray(card.likes) && card.likes.includes(user._id),
+                        likesCount: Array.isArray(card.likes) ? card.likes.length : 0,
                         creatorId: card.userId,
                     }}
                     onDelete={() => handleDeleteCard(card._id, card.liked)}

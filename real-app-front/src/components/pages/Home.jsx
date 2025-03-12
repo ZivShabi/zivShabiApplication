@@ -17,20 +17,26 @@ import PostsView from '../common/homeView/PostsView'
 import { useFriendRequest } from '../../contexts/FriendRequestContext'
 import { tabs } from '../../data/dataHome'
 import DescriptionOfReferencesInProject from '../common/homeView/DescriptionOfReferencesInProject'
+
 function Home() {
     const navigate = useNavigate()
     const [view, setView] = useState('')
     const { user } = useAuth()
     const { cards, handleToggleLike, handleDeleteCard } = useCards()
-    const { posts, loading, handleImageSubmit, handleLike, handleDeletepost, updateSelectedImage,
-        showForbidden, forbiddenWord, closeForbidden, imageFileWhileCreatingPost } = usePosts()
+    const {
+        posts, handleImageSubmit, handleLike, handleDeletepost, updateSelectedImage,
+        showForbidden, forbiddenWord, closeForbidden, imageFileWhileCreatingPost
+    } = usePosts()
     const { isRecording, handleRecordAudio, handleMarkAsListened } = useAudio()
-    const { isRecordingMessages, handleRecordAudioMessages, handleMarkAsListenedMessages } = useAudioMessagesContext()
-
-    const { messages, setNewMessage, handleMarkAsRead,
-        handleDeleteMessage, handleGetMessageById } = useMessages()
-    const { users, requests, handleSendFriendRequest,
-        handleAcceptRequest, handleDeleteRequest } = useFriendRequest()
+    const {
+        isRecordingMessages, handleRecordAudioMessages, handleMarkAsListenedMessages
+    } = useAudioMessagesContext()
+    const {
+        messages, setNewMessage, handleMarkAsRead, handleDeleteMessage, handleGetMessageById, fetchMessagesUsers, fetchSummaryMessagesUsers, openChatUsers, searchForAnExistingUser, setOpenChatUsers,
+    } = useMessages()
+    const {
+        users, requests, handleSendFriendRequest, handleAcceptRequest, handleDeleteRequest
+    } = useFriendRequest()
 
     return (<div className="container-Home-Page">
         <PageHeader title={<>Home <Logo /></>}
@@ -85,14 +91,19 @@ function Home() {
         {view === 'messages' &&
             <MessagesView
                 messages={messages}
+                fetchMessagesUsers={fetchMessagesUsers}
+                fetchSummaryMessagesUsers={fetchSummaryMessagesUsers}
+                searchForAnExistingUser={searchForAnExistingUser}
+                setOpenChatUsers={setOpenChatUsers}
+                openChatUsers={openChatUsers}
                 handleMarkAsRead={handleMarkAsRead}
                 handleDeleteMessage={handleDeleteMessage}
                 handleGetMessageById={handleGetMessageById}
                 handleRecordAudioMessages={handleRecordAudioMessages}
                 isRecordingMessages={isRecordingMessages}
                 handleMarkAsListenedMessages={handleMarkAsListenedMessages}
-                loading={loading}
                 setNewMessage={setNewMessage}
+                currentUserId={user}
                 navigate={navigate}
             />
         }

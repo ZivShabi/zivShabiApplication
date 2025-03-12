@@ -4,7 +4,6 @@ import '../../css/messages.css'
 import { useMessages } from '../../contexts/MessagesContext'
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-// import MessageItem from '../common/MessageItem'
 
 function MessageComponent() {
     const { newMessage, setNewMessage, recipientId, setRecipientId, loading, successMessage,

@@ -2,6 +2,7 @@
 function MessageItem({ message, onMarkAsRead, onDelete, onReply, onMessageById, loading, onAudioUrls, onRecordAudio, isRecording }) {
     return (
         <li key={message._id}>
+
             <h5>{message.content}</h5>
             <div className="dataMessage">
                 <h5> {message.sender?.name?.first && message.sender?.name?.last ?
@@ -11,10 +12,11 @@ function MessageItem({ message, onMarkAsRead, onDelete, onReply, onMessageById, 
                 <p> {message.recipient?.name?.first && message.recipient?.name?.last
                     ? `${message.recipient.name.first} ${message.recipient.name.last}`
                     : ''}
-                    {message.read ? <span> <i className="bi bi-check-all text-primary"></i> </span> :
-                        <span> <i className="bi bi-check-all "></i></span>} {' '}
+                    {message.read ?
+                        <span> <i className="bi bi-check-all text-primary"></i> </span> :
+                        <span> <i className="bi bi-check-all "></i></span>
+                    } {' '}
                     <span> {new Date(message.date).toLocaleString()} </span>
-
                 </p>
             </div>
             <div className="buttons">

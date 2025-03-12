@@ -196,3 +196,14 @@
         transform: scale(1.2);
     }
 }
+
+.message-content {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+li {
+    list-style: none;
+    margin-bottom: 20px;
+}

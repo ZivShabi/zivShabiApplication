@@ -2,8 +2,8 @@ import httpService from "../httpService"
 import API_ROUTES from "../apiRoutes"
 
 
-export async function getAllMessages() {
-    return await httpService.get(API_ROUTES.MESSAGES.GET_ALL)
+export function getAllMessages() {
+    return httpService.get(API_ROUTES.MESSAGES.GET_ALL)
 
 }
 
@@ -33,7 +33,8 @@ export async function getMessageById(id, messageId) {
         const res = await httpService.get(API_ROUTES.MESSAGES.GET_BY_ID(id, messageId));
         return res.data.message;
     } catch (err) {
-        console.error(err);
+        console.error('Error fetching message:', err);
+        throw err;
     }
 }
 
@@ -51,7 +52,7 @@ export async function addAudioToMessage(messageId, formData) {
 export async function updateAudioStatus(messageId, userId) {
     try {
         const res = await httpService.get(API_ROUTES.MESSAGES.UPDATE_AUDIO_STATUS(messageId), {
-            userId: userId
+            params: { userId }
         })
         return res.data
     } catch (error) {
@@ -59,3 +60,37 @@ export async function updateAudioStatus(messageId, userId) {
         throw error
     }
 }
+
+export async function getAllMessagesUsers() {
+    try {
+        const res = await httpService.get(API_ROUTES.MESSAGES.GET_ALL_USERS);
+        return res.data;
+    } catch (error) {
+        console.error('Error fetching contacts:', error.response?.data || error.message);
+        return []; // מניעת קריסה
+    }
+}
+
+
+
+export async function getSummaryMessagesUsers(receiverId, senderId) {
+    try {
+        const res = await httpService.get(API_ROUTES.MESSAGES.GET_SUMMARY_USERS(receiverId, senderId));
+        return res.data;
+    } catch (error) {
+        console.error('Error fetching contacts:', error.response?.data || error.message);
+        return []
+    }
+}
+
+export async function openChatMessagesUsers(name) {
+    try {
+        const res = await httpService.get(API_ROUTES.MESSAGES.GET_OPEN_CHAT_USERS(name))
+        return res.data;
+    } catch (error) {
+        console.error('❌ Error fetching chat:', error.response?.data || error.message);
+        return []
+    }
+}
+
+

@@ -23,8 +23,14 @@ export function CardsProvider({ children }) {
     async function fetchAllCards() {
         try {
             setLoading(true)
-            const fetchedCards = await getAllCards()
-            setCards(fetchedCards)
+            const homeCards = await getAllCards()
+            if (Array.isArray(homeCards)) {
+                setCards(homeCards)
+            } else if (homeCards && Array.isArray(homeCards.cards)) {
+                setCards(homeCards.cards)
+            } else {
+                setCards([])
+            }
         } catch (err) { } finally {
             setLoading(false)
         }
@@ -34,7 +40,13 @@ export function CardsProvider({ children }) {
         try {
             setLoading(true)
             const myCards = await getMyCards()
-            setCards(myCards)
+            if (Array.isArray(myCards)) {
+                setCards(myCards)
+            } else if (myCards && Array.isArray(myCards.cards)) {
+                setCards(myCards.cards)
+            } else {
+                setCards([])
+            }
         } catch (err) { } finally {
             setLoading(false)
         }

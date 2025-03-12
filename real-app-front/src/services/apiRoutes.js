@@ -24,6 +24,9 @@ const API_ROUTES = {
 
     MESSAGES: {
         GET_ALL: "/messages",
+        GET_ALL_USERS: "/messages/contacts",
+        GET_OPEN_CHAT_USERS: (name) => `/messages/open-chat?name=${encodeURIComponent(name)}`,
+        GET_SUMMARY_USERS: (receiverId, senderId) => `/messages/${receiverId}/summary/${senderId}`,
         SEND: (recipientId) => `/messages/${recipientId}`,
         MARK_AS_READ: (messageId) => `/messages/${messageId}/read`,
         DELETE: (messageId) => `/messages/${messageId}`,

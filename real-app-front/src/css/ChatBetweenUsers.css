@@ -1,0 +1,258 @@
+/* .open-chat-users {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.retrieveLastMessageFromAnyConversaTion {
+    width: 20vw;
+}
+
+.chat-card {
+    border: 1px solid #ddd;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.chat-card:hover {
+    background-color: #f8f9fa;
+    border-color: #bbb;
+}
+
+.user-info {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.last-message {
+    color: #777;
+    font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chat-window {
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #f4f4f4;
+    max-height: 500px;
+    overflow-y: auto;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.messageChatBetweenUsers {
+    max-width: 60vw;
+    padding: 10px 15px;
+    margin: 8px;
+    border-radius: 15px;
+    font-size: 16px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    position: relative;
+}
+
+.message.sent {
+    align-self: flex-end;
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border: 1px solid #badbcc;
+    text-align: right;
+}
+
+.message.received {
+    align-self: flex-start;
+    background-color: #cfe2ff;
+    color: #084298;
+    border: 1px solid #b6d4fe;
+    text-align: left;
+}
+
+
+.message-time {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+    display: block;
+    text-align: right;
+}
+
+.message-input {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.message-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+.message-input button {
+    margin-left: 10px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.message-input button:hover {
+    background-color: #0056b3;
+} */
+
+/* אזור הצ'אט */
+.chat-window {
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #f4f4f4;
+    max-height: 500px;
+    overflow-y: auto;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* מרווח בין ההודעות */
+}
+
+/* עיצוב להודעות */
+.message {
+    max-width: 60%;
+    padding: 10px 15px;
+    margin: 8px 0;
+    border-radius: 15px;
+    font-size: 16px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    position: relative;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* הודעה שנשלחה (צד ימין) */
+.message.sent {
+    align-self: flex-end;
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border: 1px solid #badbcc;
+    text-align: right;
+}
+
+/* הודעה שהתקבלה (צד שמאל) */
+.message.recipient {
+    align-self: flex-start;
+    background-color: #cfe2ff;
+    color: #084298;
+    border: 1px solid #b6d4fe;
+    text-align: left;
+}
+
+/* עיצוב להודעות שנשלחו על ידי משתמש מסויים */
+.message.sent-from-user {
+    align-self: flex-end;
+    background-color: #d1e7dd;
+    /* צבע להודעות מהמשתמש */
+    color: #0f5132;
+    border: 1px solid #badbcc;
+    text-align: right;
+}
+
+/* עיצוב להודעות שהתקבלו על ידי המשתמש */
+.message.received-from-user {
+    align-self: flex-start;
+    background-color: #f8d7da;
+    /* צבע להודעות שהתקבלו */
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    text-align: left;
+}
+
+/* עיצוב שם השולח */
+.message-sender {
+    font-weight: bold;
+    margin-right: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* אפשרות לקביעת אייקון קריאה של הודעה */
+.message-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    margin-top: 5px;
+}
+
+/* עיצוב לחיפוש משתמשים */
+.retrieveLastMessageFromAnyConversaTion {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    margin-bottom: 15px;
+}
+
+/* עיצוב לאזור ההודעות */
+.messagesChatBetweenUsers {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 5px;
+    overflow-y: auto;
+}
+
+/* עיצוב לאזור של שליחת הודעה */
+.message-input {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.message-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+.message-input button {
+    margin-left: 10px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.message-input button:hover {
+    background-color: #0056b3;
+}
