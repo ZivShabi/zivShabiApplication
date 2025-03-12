@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 const authMiddleware = require('../middlewares/authMiddleware')
 MessageController = require('../controllers/messageController')
-const { uploadAudio, uploadFile } = require('../middlewares/fileUploadMulter')
+const { uploadAudio } = require('../middlewares/fileUploadMulter')
 
 
 router.post('/:id', authMiddleware, MessageController.sendMessage)
@@ -20,27 +20,27 @@ router.get('/contacts', authMiddleware, MessageController.getUserContacts);
 router.get('/:receiverId/summary/:senderId', authMiddleware, MessageController.getChatSummary)
 router.get('/open-chat/', authMiddleware, MessageController.getOpenChat)
 
-//  תמיכה בשליחת קבצים (תמונות, מסמכים וכו')
-router.patch('/:id/addFile', authMiddleware, uploadFile, MessageController.addFileToMessage)
-// מחיקת הודעה עבור השולח בלבד
-router.delete('/:id/sender', authMiddleware, MessageController.deleteMessageForSender)
-//  מחיקת כל ההודעות של משתמש
-router.delete('/user/:userId', authMiddleware, MessageController.deleteAllMessagesForUser)
-//  חיפוש בהודעות
-router.get('/search', authMiddleware, MessageController.searchMessages)
-// קבלת מספר הודעות שלא נקראו
-router.get('/unread/count', authMiddleware, MessageController.getUnreadMessagesCount)
-// 
-router.post('/:senderId/typing', authMiddleware, MessageController.setTypingStatus)
-router.get('/typing/:receiverId', authMiddleware, MessageController.getTypingStatus)
+// //  תמיכה בשליחת קבצים (תמונות, מסמכים וכו')
+// router.patch('/:id/addFile', authMiddleware, uploadFile, MessageController.addFileToMessage)
+// // מחיקת הודעה עבור השולח בלבד
+// router.delete('/:id/sender', authMiddleware, MessageController.deleteMessageForSender)
+// //  מחיקת כל ההודעות של משתמש
+// router.delete('/user/:userId', authMiddleware, MessageController.deleteAllMessagesForUser)
+// //  חיפוש בהודעות
+// router.get('/search', authMiddleware, MessageController.searchMessages)
+// // קבלת מספר הודעות שלא נקראו
+// router.get('/unread/count', authMiddleware, MessageController.getUnreadMessagesCount)
+// // 
+// router.post('/:senderId/typing', authMiddleware, MessageController.setTypingStatus)
+// router.get('/typing/:receiverId', authMiddleware, MessageController.getTypingStatus)
 
-router.patch('/:id/delivered', authMiddleware, MessageController.markMessageAsDelivered)
-// מתי נראה לאחרונה המשתמש
-router.get('/last-seen/:userId', authMiddleware, MessageController.getLastSeen)
-router.patch('/last-seen', authMiddleware, MessageController.updateLastSeen)
-// סטטוס אם המשתמש מחובר 
-router.get('/online/:userId', authMiddleware, MessageController.getOnlineStatus)
-router.patch('/online', authMiddleware, MessageController.updateOnlineStatus)
+// router.patch('/:id/delivered', authMiddleware, MessageController.markMessageAsDelivered)
+// // מתי נראה לאחרונה המשתמש
+// router.get('/last-seen/:userId', authMiddleware, MessageController.getLastSeen)
+// router.patch('/last-seen', authMiddleware, MessageController.updateLastSeen)
+// // סטטוס אם המשתמש מחובר 
+// router.get('/online/:userId', authMiddleware, MessageController.getOnlineStatus)
+// router.patch('/online', authMiddleware, MessageController.updateOnlineStatus)
 
 module.exports = router
 
